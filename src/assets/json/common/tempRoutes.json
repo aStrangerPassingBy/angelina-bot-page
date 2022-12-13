@@ -1,0 +1,13 @@
+{
+  "config": {
+    "path": "/config",
+    "name": "Config",
+    "children": [
+      {
+        "path": "/config/dictionary",
+        "name": "Dictionary",
+        "component": "dictionary"
+      }
+    ]
+  }
+}

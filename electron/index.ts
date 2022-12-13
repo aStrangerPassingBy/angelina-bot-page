@@ -3,21 +3,27 @@ const { app, BrowserWindow } = require('electron')
 
 const createWindow = () => {
   const win = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    // 未隐藏头部时，height和minHeight相差20px，但是大小一样
+    width: 616,
+    height: 569,
+    minWidth: 616,
+    minHeight: 589,
+    // 隐藏头部
+    // frame: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
     }
   })
   // console.log(path.join(__dirname, '../dist/index.html'));
-  win.loadURL(process.env['VITE_DEV_SERVER_URL'])
+  // win.loadURL(process.env['VITE_DEV_SERVER_URL'])
   // win.loadFile(path.join(__dirname, '../dist/index.html'))
-  // if(app.isPackaged) {
-  //   win.loadFile(path.join(__dirname, '/dist/index.html'))
-  // } else {
-  //   win.loadURL(process.env['VITE_DEV_SERVER_URL'])
-  // }
+  if(app.isPackaged) {
+    win.loadFile(path.join(__dirname, '/dist/index.html'))
+  } else {
+    // win.loadURL(process.env['VITE_DEV_SERVER_URL'] as string)
+    win.loadURL('http://127.0.0.1:5173/')
+  }
 }
 
 app.whenReady().then(() => {

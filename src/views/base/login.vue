@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import useGlobalStore from '@/stores';
 import { useRouter } from 'vue-router';
-import { setLocalStorage, getLocalStorage } from '@/utils/utils';
 import type { FormInstance, FormRules } from 'element-plus'
+import Language from '@/components/common/language.vue'
 
 type LoginForm = {
   username: string,
@@ -13,8 +12,7 @@ type LoginForm = {
 }
 
 const i18n = useI18n();
-const router = useRouter()
-const global = useGlobalStore();
+const router = useRouter();
 
 const loading = ref<boolean>(false);
 const language = ref<boolean>(false);
@@ -25,6 +23,7 @@ const formData = reactive<LoginForm>({
   savepassword: false,
 });
 
+// 表单验证规则
 const rules = computed(():FormRules => {
   return {
     username: [
@@ -48,49 +47,29 @@ const rules = computed(():FormRules => {
   }
 })
 
+// 注册
 const register = () => {
   console.log('注册');
 };
+// 重置
 const reset = () => {
   loginFormRef.value.resetFields();
 };
+// 登录
 const confirm = () => {
   loginFormRef.value.validate((valid: boolean) => {
     if(valid) {
-      console.log(valid);
       loading.value = true;
       setTimeout(() => {
         loading.value = false;
-        console.log('登陆成功');
       }, 1000);
     }
   })
 };
-const switchLanguage = () => {
-  if(language.value) {
-    global.updateLanguage('zh');
-    i18n.locale.value = 'zh';
-    setLocalStorage('language', 'zh')
-  } else {
-    global.updateLanguage('en');
-    i18n.locale.value = 'en';
-    setLocalStorage('language', 'en')
-  }
+// 切换语言后重置表单
+const afterSwitch = () => {
   loginFormRef.value.resetFields();
-};
-
-onMounted(() => {
-  const lang = getLocalStorage('language');
-  console.log('lang', lang);
-  
-  if(lang === 'zh') {
-    language.value = true;
-    i18n.locale.value = 'zh';
-  } else {
-    language.value = false;
-    i18n.locale.value = 'en';
-  }
-})
+}
 </script>
 
 <template>
@@ -98,11 +77,7 @@ onMounted(() => {
     <div class="login-box" v-loading="loading">
       <nav class="login-nav">
         <el-button size="small" @click="register">{{$t('login.register')}}</el-button>
-        <div class="switch-language">
-          <span>English</span>
-          <el-switch v-model="language" @change="switchLanguage" style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"/>
-          <span>中文</span>
-        </div>
+        <Language @after-switch="afterSwitch"></Language>
       </nav>
       <header class="login-header">
         <img src="@/assets/images/base/logo.svg" alt="">
@@ -131,15 +106,14 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .login-page {
-  width: 100%;
-  height: 100%;
-  min-height: 600px;
-  min-width: 1000px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #ccc;
+  width: 100%;
+  height: 100%;
   .login-box {
+    box-sizing: border-box;
     width: 600px;
     min-width: 600px;
     min-height: 400px;
@@ -150,14 +124,7 @@ onMounted(() => {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      .switch-language {
-        display: flex;
-        align-items: center;
-        justify-content: end;
-        span {
-          padding: 0 5px;
-        }
-      }
+      
     }
     
     .login-header {
