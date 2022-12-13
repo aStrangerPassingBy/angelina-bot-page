@@ -62,6 +62,9 @@ const confirm = () => {
       loading.value = true;
       setTimeout(() => {
         loading.value = false;
+        router.push({
+          name: "Dictionary"
+        })
       }, 1000);
     }
   })
