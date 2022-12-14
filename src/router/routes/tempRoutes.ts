@@ -9,6 +9,7 @@ export default [
       level: 1,
       titleCn: '配置中心',
       titleEn: 'Config Center',
+      name: 'config',
       icon: '',
     },
     children: [
@@ -32,6 +33,7 @@ export default [
       level: 1,
       titleCn: '控制台',
       titleEn: 'Console',
+      name: 'console',
       icon: '',
     },
     children: [
@@ -49,7 +51,8 @@ export default [
       id: 3,
       level: 1,
       titleCn: '设置',
-      titleEn: 'Setting',
+      titleEn: 'Settings',
+      name: 'settings',
       icon: '',
     },
     children: [

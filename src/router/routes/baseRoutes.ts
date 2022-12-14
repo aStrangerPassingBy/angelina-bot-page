@@ -1,3 +1,4 @@
+
 export default [
   {
     path: '/',
@@ -11,6 +12,14 @@ export default [
     path: '/login',
     name: 'Login',
     component: () => import('@/views/base/login.vue')
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: () => import('@/layout/layout.vue'),
+    children: [
+
+    ]
   },
   {
     path: '/404',

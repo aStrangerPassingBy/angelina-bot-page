@@ -9,9 +9,9 @@
 </template>
 
 <style scoped lang='scss'>
-  .footer-box {
-    height: 100%;
-    background: #ecf5ff;
-    padding: 0 20px;
-  }
+.footer-box {
+  height: 100%;
+  background: #ecf5ff;
+  padding: 0 20px;
+}
 </style>

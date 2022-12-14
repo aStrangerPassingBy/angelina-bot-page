@@ -2,7 +2,7 @@ import router from './router'
 import useGlobalStore from '@/stores'
 
 router.beforeEach((to, from, next) => {
-  console.log(to, from);
+  // console.log(to, from);
   
   const globalStore = useGlobalStore();
   if(!globalStore.token && to.path != '/login' && to.path != '/404') {

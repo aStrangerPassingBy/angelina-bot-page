@@ -59,15 +59,15 @@ onMounted(() => {
 </template>
 
 <style scoped lang='scss'>
-  .language-list {
-    .language-list-item {
-      height: 30px;
-      line-height: 30px;
-      cursor: pointer;
-      user-select: none;
-    }
-    .language-list-item:hover {
-      background: #c6e2ff;
-    }
+.language-list {
+  .language-list-item {
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    user-select: none;
   }
+  .language-list-item:hover {
+    background: #c6e2ff;
+  }
+}
 </style>

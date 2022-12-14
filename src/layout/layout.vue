@@ -27,11 +27,11 @@ import Footer from './footer/index.vue'
 </template>
 
 <style lang="scss" scoped>
-  .layout-box {
-    width: 100%;
-    height: 100%;
-    min-width: 1024px;
-    min-height: 576px;
-    background: #fff;
-  }
+.layout-box {
+  width: 100%;
+  height: 100%;
+  min-width: 1024px;
+  min-height: 576px;
+  background: #fff;
+}
 </style>

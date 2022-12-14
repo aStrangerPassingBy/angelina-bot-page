@@ -23,7 +23,7 @@ declare module '@vue/runtime-core' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ErrorComponent: typeof import('./src/components/common/errorComponent.vue')['default']
-    Language: typeof import('./src/components/common/Language.vue')['default']
+    Language: typeof import('./src/components/common/language.vue')['default']
     LoadingComponent: typeof import('./src/components/common/loadingComponent.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

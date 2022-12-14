@@ -4,7 +4,6 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import type { FormInstance, FormRules } from 'element-plus'
 import useGlobalStore from '@/stores';
-import Language from '@/components/common/Language.vue'
 
 type LoginForm = {
   username: string,
@@ -65,7 +64,7 @@ const confirm = () => {
         loading.value = false;
         globalStore.setToken('zzz')
         router.push({
-          path: "/config"
+          path: "/config/dictionary"
         })
       }, 1000);
     }

@@ -44,15 +44,15 @@ const handleLogout = () => {
 </template>
 
 <style scoped lang='scss'>
-  .user-menu {
-    .user-menu-item {
-      height: 30px;
-      line-height: 30px;
-      cursor: pointer;
-      user-select: none;
-    }
-    .user-menu-item:hover {
-      background: #c6e2ff;
-    }
+.user-menu {
+  .user-menu-item {
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    user-select: none;
   }
+  .user-menu-item:hover {
+    background: #c6e2ff;
+  }
+}
 </style>

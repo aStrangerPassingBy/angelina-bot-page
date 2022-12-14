@@ -1,26 +1,35 @@
 <script setup lang='ts'>
-import { computed } from 'vue';
-import { useRouter } from 'vue-router';
-import useGlobalStore from '@/stores';
-import menuList from '@/router/routes/tempRoutes'
+  import { computed, watch } from 'vue';
+  import { useRouter } from 'vue-router';
+  import useGlobalStore from '@/stores';
+  import menuList from '@/router/routes/tempRoutes'
 
-const router = useRouter();
-const globalStore = useGlobalStore()
+  const router = useRouter();
+  const globalStore = useGlobalStore()
 
-const title = computed(() => {
-  return function(meta: { titleCn: string; titleEn: string }) {
-    switch(globalStore.language) {
-      case 'en':
-        return meta.titleEn;
-      case 'zh':
-      default:
-        return meta.titleCn;
+  const title = computed(() => {
+    return function(meta: { titleCn: string; titleEn: string }) {
+      console.log(globalStore.language);
+      
+      switch(globalStore.language) {
+        case 'en':
+          return meta.titleEn;
+        case 'zh':
+        default:
+          return meta.titleCn;
+      }
     }
-  }
-})
+  })
 
-console.log(router.currentRoute.value);
+  watch(
+    () => router.currentRoute.value,
+    () => {
 
+    },
+    {
+      immediate: true
+    }
+  )
 </script>
 
 <template>
@@ -28,7 +37,7 @@ console.log(router.currentRoute.value);
     <ul class="menu-list">
       <li
         v-for="item in menuList" 
-        :class="['menu-list-item', item.path === router.currentRoute.value.path ? 'is-active' : '']"
+        :class="['menu-list-item', item.path === router.currentRoute.value.matched[0].path ? 'is-active' : '']"
         :key="item.meta.titleCn" 
         @click="router.push(item.children[0].path)">
         {{ title(item.meta) }}
@@ -38,22 +47,22 @@ console.log(router.currentRoute.value);
 </template>
 
 <style scoped lang='scss'>
-  .aside-box {
-    padding: 10px;
-    .menu-list {
-      border: 1px solid rgba(95, 95, 95, 0.1);
+.aside-box {
+  padding: 10px;
+  .menu-list {
+    border: 1px solid rgba(95, 95, 95, 0.1);
+    border-radius: 10px;
+    .menu-list-item {
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
       border-radius: 10px;
-      .menu-list-item {
-        height: 40px;
-        line-height: 40px;
-        text-align: center;
-        border-radius: 10px;
-        cursor: pointer;
-        user-select: none;
-      }
-      .is-active, .menu-list-item:hover {
-        background: #ecf5ff;
-      }
+      cursor: pointer;
+      user-select: none;
+    }
+    .is-active, .menu-list-item:hover {
+      background: #ecf5ff;
     }
   }
+}
 </style>
