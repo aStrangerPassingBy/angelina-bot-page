@@ -4,10 +4,10 @@
 
 <template>
   <div>
-    status
+    console
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
   
 </style>

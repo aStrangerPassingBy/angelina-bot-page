@@ -1,33 +1,38 @@
 <script setup lang='ts'>
 import { computed } from 'vue';
-import { useRouter, type RouteRecordRaw } from 'vue-router';
+import { useRouter } from 'vue-router';
 import useGlobalStore from '@/stores';
-import menuList from '@/router/tempRoutes'
+import menuList from '@/router/routes/tempRoutes'
 
 const router = useRouter();
 const globalStore = useGlobalStore()
 
 const title = computed(() => {
-  return function(meta: { title: string; titleEn: string }) {
+  return function(meta: { titleCn: string; titleEn: string }) {
     switch(globalStore.language) {
       case 'en':
         return meta.titleEn;
       case 'zh':
       default:
-        return meta.title;
+        return meta.titleCn;
     }
   }
 })
 
-const jump = (target:RouteRecordRaw) => {
-  router.push(target.path)
-}
+console.log(router.currentRoute.value);
+
 </script>
 
 <template>
   <aside class="aside-box">
     <ul class="menu-list">
-      <li class="menu-list-item" v-for="item in menuList" :key="item.meta.title" @click="jump(item.children[0])">{{ title(item.meta) }}</li>
+      <li
+        v-for="item in menuList" 
+        :class="['menu-list-item', item.path === router.currentRoute.value.path ? 'is-active' : '']"
+        :key="item.meta.titleCn" 
+        @click="router.push(item.children[0].path)">
+        {{ title(item.meta) }}
+      </li>
     </ul>
   </aside>
 </template>
@@ -46,7 +51,7 @@ const jump = (target:RouteRecordRaw) => {
         cursor: pointer;
         user-select: none;
       }
-      .menu-list-item:hover {
+      .is-active, .menu-list-item:hover {
         background: #ecf5ff;
       }
     }

@@ -10,10 +10,13 @@ const useGlobalStore = defineStore({
   getters: {},
   actions: {
     setToken(token: string) {
-      this.token = token
+      this.token = token;
+    },
+    clearToken() {
+      this.token = '';
     },
     updateLanguage(lang: string) {
-      this.language = lang
+      this.language = lang;
     }
   },
 })

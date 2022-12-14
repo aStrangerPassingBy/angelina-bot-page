@@ -7,6 +7,7 @@ import i18n from './language'
 import components from './components'
 
 import './styles/base/app.scss'
+import 'element-plus/dist/index.css'
 
 const app = createApp(App);
 const store = createPinia();

@@ -1,5 +1,4 @@
 <script setup lang='ts'>
-import Language from '@/components/common/language.vue';
 import user from './components/user.vue'
 </script>
 

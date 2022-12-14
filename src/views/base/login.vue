@@ -3,7 +3,8 @@ import { ref, reactive, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import type { FormInstance, FormRules } from 'element-plus'
-import Language from '@/components/common/language.vue'
+import useGlobalStore from '@/stores';
+import Language from '@/components/common/Language.vue'
 
 type LoginForm = {
   username: string,
@@ -13,9 +14,9 @@ type LoginForm = {
 
 const i18n = useI18n();
 const router = useRouter();
+const globalStore = useGlobalStore();
 
 const loading = ref<boolean>(false);
-const language = ref<boolean>(false);
 const loginFormRef = ref();
 const formData = reactive<LoginForm>({
   username: '',
@@ -62,8 +63,9 @@ const confirm = () => {
       loading.value = true;
       setTimeout(() => {
         loading.value = false;
+        globalStore.setToken('zzz')
         router.push({
-          name: "Dictionary"
+          path: "/config"
         })
       }, 1000);
     }

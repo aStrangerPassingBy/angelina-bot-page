@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { computed } from 'vue';
   import useGlobalStore from '@/stores'
-  import zhCn from "element-plus/es/locale/lang/zh-cn";
-  import en from "element-plus/es/locale/lang/en";
+  import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+  import en from 'element-plus/dist/locale/en.mjs'
 
   const globalStore = useGlobalStore();
 

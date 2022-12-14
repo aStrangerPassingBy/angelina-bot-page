@@ -5,9 +5,9 @@ import useGlobalStore from '@/stores';
 import { setLocalStorage, getLocalStorage } from '@/utils/utils'
 
 type Props = {
-  text: boolean,
-  type: 'primary'| 'success'| 'warning'| 'danger'| 'info'| 'text' | '',
-  size: 'large'| 'default' | 'small'
+  text?: boolean,
+  type?: 'primary'| 'success'| 'warning'| 'danger'| 'info'| 'text' | '',
+  size?: 'large'| 'default' | 'small'
 }
 const emits = defineEmits<{
   (e: 'afterSwitch'): void
