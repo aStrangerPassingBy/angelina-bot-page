@@ -34,8 +34,8 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 // })
 
 export default defineConfig((config) => {
-  const env = loadEnv(config.mode, process.cwd(), '');
-  console.log(config, env);
+  // const env = loadEnv(config.mode, process.cwd(), '');
+  // console.log(config, env);
 
   switch(config.mode) {
     case 'electron':

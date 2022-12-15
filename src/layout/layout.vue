@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Header from './header/index.vue'
-import Side from './side/index.vue'
-import Main from './main/index.vue'
-import Footer from './footer/index.vue'
+import Header from './header/header.vue'
+import ASide from './aside/aside.vue'
+import Main from './main/main.vue'
+import Footer from './footer/footer.vue'
 </script>
 
 <template>
@@ -13,7 +13,7 @@ import Footer from './footer/index.vue'
       </el-header>
       <el-container>
         <el-aside width="200px">
-          <Side></Side>
+          <ASide></ASide>
         </el-aside>
         <el-main>
           <Main></Main>

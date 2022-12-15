@@ -1,13 +1,46 @@
-{
-  "config": {
+[
+  {
+    "id": "1",
+    "path": "/home",
+    "name": "Home",
+    "titleCn": "首页",
+    "titleEn": "Home",
+    "hasChildren": false,
+    "component": "home/home"
+  },
+  {
+    "id": "2",
     "path": "/config",
     "name": "Config",
+    "titleCn": "配置中心",
+    "titleEn": "Config Center",
+    "hasChildren": true,
     "children": [
       {
+        "id": "2-1",
         "path": "/config/dictionary",
         "name": "Dictionary",
-        "component": "dictionary"
+        "titleCn": "字典",
+        "titleEN": "dictionary",
+        "component": "config/dictionary"
+      },
+      {
+        "id": "2-2",
+        "path": "/config/notice",
+        "name": "Notice",
+        "titleCn": "公告",
+        "titleEN": "dictionary",
+        "component": "config/notice"
       }
     ]
+  },
+  {
+    "id": "3",
+    "path": "/console",
+    "name": "Console",
+    "titleCn": "控制台",
+    "titleEn": "Console",
+    "hasChildren": false,
+    "component": "console/console"
   }
-}
+]

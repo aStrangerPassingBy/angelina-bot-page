@@ -14,12 +14,9 @@ export default [
     component: () => import('@/views/base/login.vue')
   },
   {
-    path: '/home',
-    name: 'Home',
-    component: () => import('@/layout/layout.vue'),
-    children: [
-
-    ]
+    path: '/403',
+    name: 'NoPermission',
+    component: () => import('@/views/error/noPermission.vue')
   },
   {
     path: '/404',

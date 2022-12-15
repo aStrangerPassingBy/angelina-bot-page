@@ -5,6 +5,8 @@ import { useRouter } from 'vue-router';
 import type { FormInstance, FormRules } from 'element-plus'
 import useGlobalStore from '@/stores';
 
+import tempRoutes from '@/assets/json/common/tempRoutes.json'
+
 type LoginForm = {
   username: string,
   password: string,
@@ -62,9 +64,38 @@ const confirm = () => {
       loading.value = true;
       setTimeout(() => {
         loading.value = false;
-        globalStore.setToken('zzz')
+        globalStore.setToken('zzz');
+        const modules = import.meta.glob('@/views/modules/*/*.vue');
+        tempRoutes.forEach(item => {
+          router.addRoute({
+            path: item.path,
+            name: item.name,
+            component: () => import('@/layout/layout.vue'),
+            meta: {
+              id: item.id,
+              titleCn: item.titleCn,
+              titleEn: item.titleEn,
+              hasChildren: item.hasChildren,
+              component: item.component
+            }
+          });
+          if(item.hasChildren) {
+            item?.children?.forEach(innerItem => {
+              router.addRoute(item.name, {
+                path: innerItem.path,
+                name: innerItem.name,
+                component: modules[`/src/views/modules/${innerItem.component}.vue`],
+                meta: {
+                  id: innerItem.id,
+                  titleCn: innerItem.titleCn,
+                  titleEn: innerItem.titleEN,
+                }
+              });
+            });
+          }
+        });
         router.push({
-          path: "/config/dictionary"
+          path: tempRoutes[0].hasChildren ? (tempRoutes[0] as any).children[0].path : tempRoutes[0].path
         })
       }, 1000);
     }
@@ -80,12 +111,12 @@ const afterSwitch = () => {
   <div class="login-page">
     <div class="login-box" v-loading="loading">
       <nav class="login-nav">
-        <el-button size="small" @click="register">{{$t('login.register')}}</el-button>
+        <el-button size="small" @click="register">{{ $t('login.register') }}</el-button>
         <Language @after-switch="afterSwitch"></Language>
       </nav>
       <header class="login-header">
         <img src="@/assets/images/base/logo.svg" alt="">
-        <h1>angelina-bot</h1>
+        <h1>title-login</h1>
       </header>
       <main class="login-form">
         <el-form :rules="rules" :model="formData" ref="loginFormRef">

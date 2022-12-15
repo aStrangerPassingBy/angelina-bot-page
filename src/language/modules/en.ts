@@ -8,5 +8,8 @@ export default {
     checkUserName: 'please enter you username!!!',
     checkPassword: 'please enter you password!!!',
     savePassword: 'save password'
+  },
+  user: {
+    logout: 'logout'
   }
 }

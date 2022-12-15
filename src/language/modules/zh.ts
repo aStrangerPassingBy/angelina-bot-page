@@ -8,5 +8,8 @@ export default {
     checkUserName: '请输入账号！！！',
     checkPassword: '请输入密码！！！',
     savePassword: '保存密码'
+  },
+  user: {
+    logout: '退出登录'
   }
 }

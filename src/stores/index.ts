@@ -4,7 +4,7 @@ import type { GlobalStore } from './interface'
 const useGlobalStore = defineStore({
   id: 'globalStore',
   state: (): GlobalStore => ({
-    token: '',
+    token: 'zzz',
     language: ''
   }),
   getters: {},

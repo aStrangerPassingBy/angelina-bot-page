@@ -4,7 +4,7 @@
 
 <template>
   <div>
-    loading
+    No permission
   </div>
 </template>
 

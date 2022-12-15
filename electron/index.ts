@@ -1,8 +1,6 @@
-const path = require('path')
-const electron = require('electron')
-const { app, BrowserWindow } = require('electron')
+const path = require('path');
+const { app, BrowserWindow, Menu } = require('electron');
 
-const Menu = electron.Menu;
 Menu.setApplicationMenu(null);
 
 const createWindow = () => {
@@ -18,15 +16,16 @@ const createWindow = () => {
       contextIsolation: false
     }
   })
-  // console.log(path.join(__dirname, '../dist/index.html'));
-  // win.loadURL(process.env['VITE_DEV_SERVER_URL'])
-  // win.loadFile(path.join(__dirname, '../dist/index.html'))
-  if(app.isPackaged) {
-    win.loadFile(path.join(__dirname, '/dist/index.html'))
+
+  // if(app.isPackaged) {
+  //   win.loadFile(path.join(__dirname, '/dist/index.html'))
+  // } else {
+  //   win.loadURL(process.env['VITE_DEV_SERVER_HOSTNAME'] as string || process.env['VITE_DEV_SERVER_URL'] as string);
+  // }
+  if(process.env['VITE_DEV_SERVER_HOSTNAME'] || process.env['VITE_DEV_SERVER_URL']) {
+    win.loadURL(String(process.env['VITE_DEV_SERVER_HOSTNAME'] || process.env['VITE_DEV_SERVER_URL']));
   } else {
-    // win.loadURL(process.env['VITE_DEV_SERVER_URL'] as string)
-    win.loadURL('http://127.0.0.1:5173/')
-    // win.loadURL('http://localhost:5173/')
+    win.loadFile(path.join(__dirname, '/dist/index.html'))
   }
 }
 
@@ -35,11 +34,11 @@ app.whenReady().then(() => {
   console.log('ready');
   app.on('activate', () => {
     console.log('activate');
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    if(BrowserWindow.getAllWindows().length === 0) createWindow();
   })
 })
 
 app.on('window-all-closed', () => {
   console.log('window-all-closed');
-  if (process.platform !== 'darwin') app.quit()
+  if(process.platform !== 'darwin') app.quit();
 })

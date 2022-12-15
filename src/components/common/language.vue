@@ -4,20 +4,9 @@ import { useI18n } from 'vue-i18n';
 import useGlobalStore from '@/stores';
 import { setLocalStorage, getLocalStorage } from '@/utils/utils'
 
-type Props = {
-  text?: boolean,
-  type?: 'primary'| 'success'| 'warning'| 'danger'| 'info'| 'text' | '',
-  size?: 'large'| 'default' | 'small'
-}
 const emits = defineEmits<{
   (e: 'afterSwitch'): void
 }>()
-
-const props = withDefaults(defineProps<Props>(), {
-  text: () => false,
-  type: () => '',
-  size: () => 'default'
-}) 
 
 const i18n = useI18n();
 const globalStore = useGlobalStore();
@@ -49,7 +38,7 @@ onMounted(() => {
     :width="150"
     trigger="hover">
     <template #reference>
-      <el-button :type="props.type" :text="props.text" :size="props.size">language</el-button>
+      <img class="language-icon" src="@/assets/images/base/switch-language.svg" alt="">
     </template>
     <ul class="language-list">
       <li class="language-list-item" @click="switchLanguage('zh')">中文</li>
@@ -69,5 +58,10 @@ onMounted(() => {
   .language-list-item:hover {
     background: #c6e2ff;
   }
+}
+.language-icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
 }
 </style>

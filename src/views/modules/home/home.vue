@@ -4,7 +4,7 @@
 
 <template>
   <div>
-    error
+    home
   </div>
 </template>
 
