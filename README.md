@@ -1,1 +1,2 @@
-一个人畜无害的README
+<del>typescript</del>
+anyscript
