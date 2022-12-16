@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import useGlobalStore from '@/stores';
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -6,6 +7,16 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 const router = useRouter();
 const globalStore = useGlobalStore();
 
+const visible = reactive({
+  bindQQ: false
+})
+
+const editUN = () => {
+
+}
+const editPW = () => {
+
+}
 const handleLogout = () => {
   ElMessageBox.confirm(
     '确定要退出登录么',
@@ -37,9 +48,37 @@ const handleLogout = () => {
       <img class="user-avatar" src="@/assets/images/base/default-avatar.png" alt="">
     </template>
     <ul class="user-menu">
+      <li class="user-menu-item" @click="visible.bindQQ = true">
+        <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
+        {{ $t('header.bindQQ') }}
+      </li>
+      <el-dialog
+        v-model="visible.bindQQ"
+        :title="$t('header.bindQQ')"
+        :close-on-click-modal="false"
+        :append-to-body="true"
+        width="30%">
+        <span>bind</span>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="visible.bindQQ = false">{{ $t('common.cancel') }}</el-button>
+            <el-button type="primary" @click="visible.bindQQ = false">
+              {{ $t('common.confirm') }}
+            </el-button>
+          </span>
+        </template>
+      </el-dialog>
+      <li class="user-menu-item" @click="editUN">
+        <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
+        {{ $t('header.editUN') }}
+      </li>
+      <li class="user-menu-item" @click="editPW">
+        <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
+        {{ $t('header.editPW') }}
+      </li>
       <li class="user-menu-item" @click="handleLogout">
-        <img src="@/assets/images/base/user-logout.svg" alt="">
-        {{ $t('user.logout') }}
+        <!-- <img src="@/assets/images/base/user-logout.svg" alt=""> -->
+        {{ $t('header.logout') }}
       </li>
     </ul>
   </el-popover>

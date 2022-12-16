@@ -44,6 +44,7 @@ const clickMenu = (e: any) => {
 
 <style scoped lang='scss'>
 .tabs-box {
+  margin-left: 10px;
   flex: 2;
   position: relative;
   ul {

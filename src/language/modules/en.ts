@@ -1,15 +1,27 @@
 export default {
+  common: {
+    confirm: 'confirm',
+    cancel: 'cancel',
+  },
   login: {
     reset: 'reset',
     confirm: 'confirm',
+    cancel: 'cancel',
     register: 'register',
-    username: 'please enter your username',
-    password: 'please enter your password',
+    username: 'username',
+    password: 'password',
+    usernamePlaceholder: 'please enter your username',
+    passwordPlaceholder: 'please enter your password',
     checkUserName: 'please enter you username!!!',
     checkPassword: 'please enter you password!!!',
-    savePassword: 'save password'
+    savePassword: 'save password',
   },
-  user: {
-    logout: 'logout'
+  header: {
+    bindQQ: 'bind QQ',
+    editUN: 'edit username',
+    editPW: 'edit password',
+    logout: 'logout',
+    about: 'about',
+    document: 'document'
   }
 }
