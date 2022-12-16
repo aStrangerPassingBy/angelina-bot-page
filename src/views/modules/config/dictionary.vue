@@ -1,10 +1,12 @@
 <script setup lang='ts'>
-
+import notice from '@/views/modules/home/components/notice.vue'
 </script>
 
 <template>
   <div>
-    dictionary
+    <notice></notice>
+    <notice></notice>
+    <notice></notice>
   </div>
 </template>
 

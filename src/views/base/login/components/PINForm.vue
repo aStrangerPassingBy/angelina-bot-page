@@ -4,8 +4,7 @@
 
 <template>
   <div>
-    404
-    <router-link to="/login">返回登录页</router-link>
+    PIN
   </div>
 </template>
 
