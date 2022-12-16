@@ -1,9 +1,0 @@
-version: 0.0.0
-files:
-  - url: electron_0.0.0.exe
-    sha512: /42P9atfayOYUS0ATqNH5xPwYkLyovB2IkXbYOzjzpzjwEIsabcioN7/eZvCHF04QyWWNtR6Q06leOzb/Olauw==
-    size: 76101604
-path: electron_0.0.0.exe
-sha512: /42P9atfayOYUS0ATqNH5xPwYkLyovB2IkXbYOzjzpzjwEIsabcioN7/eZvCHF04QyWWNtR6Q06leOzb/Olauw==
-releaseNotes: 版本更新的具体内容
-releaseDate: '2022-12-12T12:32:20.518Z'
