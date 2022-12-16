@@ -40,6 +40,47 @@ export function setLocalStorage(key: string, value: any) {
 }
 
 /**
+ * @description 获取sessionStorage
+ * @param {String} key Storage名称
+ * @return string
+ */
+export function getSessionStorage(key: string) {
+	const value = window.sessionStorage.getItem(key);
+	try {
+		return JSON.parse(window.sessionStorage.getItem(key) as string);
+	} catch (error) {
+		return value;
+	}
+}
+
+/**
+ * @description 保存sessionStorage
+ * @param {String} key Storage名称
+ * @param {any} value 保存的值
+ * @return void
+ */
+export function setSessionStorage(key: string, value: any) {
+  window.sessionStorage.setItem(key, JSON.stringify(value));
+}
+
+/**
+ * @description 清除sessionStorage
+ * @return void
+ */
+ export function clearSessionStorage() {
+	window.sessionStorage.clear();
+}
+
+/**
+ * @description 删除sessionStorage内的某个值
+ * @param {String} key Storage名称
+ * @return void
+ */
+ export function removeSessionStorage(key: string) {
+	window.sessionStorage.removeItem(key);
+}
+
+/**
  * @description 获取浏览器默认语言
  * @return string
  */

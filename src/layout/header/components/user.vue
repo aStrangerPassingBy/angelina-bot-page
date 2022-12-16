@@ -3,6 +3,7 @@ import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import useGlobalStore from '@/stores';
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { clearSessionStorage } from '@/utils/utils';
 
 const router = useRouter();
 const globalStore = useGlobalStore();
@@ -26,6 +27,7 @@ const handleLogout = () => {
     }
   ).then(() => {
     globalStore.clearToken();
+    clearSessionStorage();
     router.push({
       path: '/login'
     })

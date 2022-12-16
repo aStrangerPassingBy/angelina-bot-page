@@ -59,6 +59,7 @@ const title = computed(() => {
   }
   .el-aside {
     width: 20%;
+    max-width: 200px;
   }
   .el-main {
     box-sizing: border-box;

@@ -9,22 +9,23 @@ import user from './components/user.vue'
 <template>
   <header class="header-box">
     <div class="header-left">
+      <img src="@/assets/images/base/angelina.jpg" alt="">
       <h1>
-        title
+        angelina-bot
       </h1>
       <h2>
-        titletitiel
+        -{{ $t('common.description') }}
       </h2>
     </div>
     <ul class="header-right">
+      <li class="header-right-item">
+        <about></about>
+      </li>
       <li class="header-right-item">
         <download></download>
       </li>
       <li class="header-right-item">
         <document></document>
-      </li>
-      <li class="header-right-item">
-        <about></about>
       </li>
       <li class="header-right-item">
         <github></github>
@@ -50,13 +51,24 @@ import user from './components/user.vue'
   .header-left {
     display: flex;
     align-items: center;
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    h1 {
+      font-size: 30px;
+    }
   }
   .header-right {
     display: flex;
     .header-right-item {
       display: flex;
       align-items: center;
+      justify-content: center;
       margin: 0 20px;
+      width: 75px;
     }
   }
   

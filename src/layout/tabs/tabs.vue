@@ -47,6 +47,7 @@ const clickMenu = (e: any) => {
   margin-left: 10px;
   flex: 2;
   position: relative;
+  max-width: 200px;
   ul {
     width: 100%;
     height: 100%;

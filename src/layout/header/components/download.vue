@@ -4,7 +4,8 @@
 
 <template>
   <div class="download-box">
-    <img src="@/assets/images/base/download.svg" alt="">
+    <!-- <img src="@/assets/images/base/download.svg" alt=""> -->
+    {{ $t('header.download') }}
   </div>
 </template>
 

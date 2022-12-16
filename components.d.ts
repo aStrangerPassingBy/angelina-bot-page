@@ -22,8 +22,6 @@ declare module '@vue/runtime-core' {
     ElInput: typeof import('element-plus/es')['ElInput']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElPopover: typeof import('element-plus/es')['ElPopover']
-    ElScollbar: typeof import('element-plus/es')['ElScollbar']
-    ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     Language: typeof import('./src/components/common/language.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

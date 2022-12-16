@@ -9,7 +9,7 @@
     "dev": "vite --mode browser",
     "dev:ele": "vite --mode electron",
     "build": "run-p type-check build-only",
-    "build:ele": "run-p build && electron-builder",
+    "release": "run-p build && electron-builder",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",

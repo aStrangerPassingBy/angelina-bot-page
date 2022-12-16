@@ -1,7 +1,8 @@
 <script setup lang='ts'>
 import { ref, reactive, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import type { FormRules } from 'element-plus'
+import type { FormRules } from 'element-plus';
+import tempRoutes from '@/assets/json/common/tempRoutes.json'
 
 const emits = defineEmits<{
   (e: 'afterLogin', returnObject: any): void,
@@ -55,10 +56,11 @@ const confirm = () => {
     if(valid) {
       emits('updateLoading', true)
       setTimeout(() => {
-        const obj = {
-          token: 'zzz'
+        const returnObject = {
+          token: 'zzz',
+          routes: tempRoutes
         }
-        emits('afterLogin', obj);
+        emits('afterLogin', returnObject);
       }, 1000);
     }
   })
@@ -66,7 +68,7 @@ const confirm = () => {
 
 defineExpose({
   reset
-})
+});
 </script>
 
 <template>

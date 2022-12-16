@@ -5,6 +5,7 @@ import notice from './components/notice.vue'
 <template>
   <div class="home-box">
     <notice></notice>
+    <notice></notice><notice></notice><notice></notice><notice></notice><notice></notice><notice></notice>
   </div>
 </template>
 
