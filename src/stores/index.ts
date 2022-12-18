@@ -1,11 +1,13 @@
-import { defineStore } from 'pinia'
-import type { GlobalStore } from './interface'
+import { defineStore } from 'pinia';
+import type { GlobalStore } from './interface';
 
 const useGlobalStore = defineStore({
   id: 'globalStore',
   state: (): GlobalStore => ({
-    token: 'zzz',
-    language: ''
+    token: '',
+    language: '',
+    publicKey: '',
+    userInfo: {}
   }),
   getters: {},
   actions: {
@@ -17,6 +19,9 @@ const useGlobalStore = defineStore({
     },
     updateLanguage(lang: string) {
       this.language = lang;
+    },
+    updatePublicKey(key: string) {
+      this.publicKey = key;
     }
   },
 })

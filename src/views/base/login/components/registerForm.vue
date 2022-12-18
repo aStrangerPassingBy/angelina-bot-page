@@ -3,16 +3,29 @@ import { ref, reactive, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ElMessage } from 'element-plus'
 import type { FormRules } from 'element-plus'
-
-const emits = defineEmits<{
-  (e: 'cancelRegister'): void,
-}>()
+import adminRoutes from '@/assets/json/common/tempAdminRoutes.json'
+import commonRoutes from '@/assets/json/common/tempCommonRoutes.json'
+import { registerApi, getRSAPublicKeyApi } from '@/api/common/common';
+import { setSessionStorage, getSessionStorage } from '@/utils/storage';
+import { getRsaPassword } from '@/utils/rsaEncrypt'
+import type { RouteListItem } from '@/router/interface';
 
 type LoginForm = {
   username: string,
   password: string,
   confirmPassword: string
 }
+type EmitObject = {
+  token: string,
+  routeList: RouteListItem[]
+}
+
+const emits = defineEmits<{
+  (e: 'afterRegister', EmitObject: EmitObject): void,
+  (e: 'cancelRegister'): void,
+}>()
+
+
 
 const i18n = useI18n();
 
@@ -46,39 +59,60 @@ const rules = computed(():FormRules => {
     ],
     confirmPassword: [
       {
-        required: true,
-        message: i18n.t('login.checkPassword')
-      },
-      {
-        trigger: 'blur'
-      },
-      {
         validator: confirmPasswordEnter,
-        trigger: 'blur'
+        trigger: 'change'
       }
     ]
   }
 })
 
 const confirmPasswordEnter = (rule: any, value: any, callback: any) => {
-  if (value !== formData.password) {
+  if(value === '') {
+    callback(new Error('请输入密码'))
+  } else if(value !== formData.password) {
     callback(new Error('输入的密码不一致！'))
   } else {
     callback()
   }
 }
+
 const confirm = () => {
-  registerFormRef.value.validate((valid: boolean) => {
+  registerFormRef.value.validate(async (valid: boolean) => {
     if(valid) {
+      let params, returnRegister, publicKey, emitObject: EmitObject;
       loading.value = true;
-      setTimeout(() => {
-        loading.value = false;
+      try {
+        const returnPublicKey = await getRSAPublicKeyApi();
+        publicKey = returnPublicKey.data;
+        params = {
+          name: formData.username,
+          pwd: getRsaPassword(publicKey, formData.password),
+        };
+        returnRegister = await registerApi(params);
         ElMessage({
-          message: 'successed',
           type: 'success',
+          message: '注册成功'
         })
-        emits('cancelRegister');
-      }, 2000);
+      } catch(err) {
+        ElMessage({
+          type: 'error',
+          message: '注册失败'
+        })
+        console.log('err', err);
+      }
+      if(returnRegister.data.userInfo.isAdmin) {
+        emitObject = {
+          token: returnRegister.data.token,
+          routeList: adminRoutes as unknown as RouteListItem[]
+        };
+      } else {
+        emitObject = {
+          token: returnRegister.data.token,
+          routeList: commonRoutes as unknown as RouteListItem[]
+        };
+      }
+      loading.value = false;
+      emits('afterRegister', emitObject);
     }
   });
 }

@@ -3,13 +3,13 @@ import notice from '@/views/modules/home/components/notice.vue'
 </script>
 
 <template>
-  <div>
-    <notice></notice>
-    <notice></notice>
-    <notice></notice>
+  <div class="dictManage-box">
+    目前没什么用
   </div>
 </template>
 
 <style scoped lang='scss'>
+.dictManage-box {
 
+}
 </style>

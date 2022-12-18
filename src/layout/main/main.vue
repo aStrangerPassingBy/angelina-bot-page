@@ -7,7 +7,7 @@ const router = useRouter();
 const modules = import.meta.glob('@/views/modules/*/*.vue');
 
 
-const currentRouteLevel1 = computed(() => {
+const currentRoutePath = computed(() => {
   return router.currentRoute.value.matched[0].meta
 })
 
@@ -22,7 +22,7 @@ const currentRouteLevel1 = computed(() => {
         </router-view>
       </template>
       <template v-else>
-        <component :is="defineAsyncComponent(modules[`/src/views/modules/${currentRouteLevel1.component}.vue`] as any)"></component>
+        <component :is="defineAsyncComponent(modules[`/src/views/modules${currentRoutePath.componentPath}.vue`] as any)"></component>
       </template>
     </div>
   </main>

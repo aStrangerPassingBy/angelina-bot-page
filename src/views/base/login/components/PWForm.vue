@@ -2,10 +2,20 @@
 import { ref, reactive, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { FormRules } from 'element-plus';
-import tempRoutes from '@/assets/json/common/tempRoutes.json'
+import adminRoutes from '@/assets/json/common/tempAdminRoutes.json'
+import commonRoutes from '@/assets/json/common/tempCommonRoutes.json'
+import { getRSAPublicKeyApi, loginApi } from '@/api/common/common';
+import { getRsaPassword } from '@/utils/rsaEncrypt';
+import type { RouteListItem } from '@/router/interface';
+import { getSessionStorage, setSessionStorage } from '@/utils/storage';
+
+type EmitObject = {
+  token: string,
+  routeList: RouteListItem[]
+}
 
 const emits = defineEmits<{
-  (e: 'afterLogin', returnObject: any): void,
+  (e: 'afterLogin', emitObject: EmitObject): void,
   (e: 'updateLoading', status: boolean): void
 }>()
 
@@ -24,7 +34,7 @@ const formData = reactive<LoginForm>({
   savepassword: false,
 });
 
-const rules = computed(():FormRules => {
+const rules = computed((): FormRules => {
   return {
     username: [
       {
@@ -47,23 +57,42 @@ const rules = computed(():FormRules => {
   }
 })
 
+// 重置表单
 const reset = () => {
   loginFormRef.value.resetFields();
 };
-// 登录
+// 密码登录，如果本地没有publicKey则先获取publicKey再登录
 const confirm = () => {
-  loginFormRef.value.validate((valid: boolean) => {
+  loginFormRef.value.validate(async (valid: boolean) => {
     if(valid) {
-      emits('updateLoading', true)
-      setTimeout(() => {
-        const returnObject = {
-          token: 'zzz',
-          routes: tempRoutes
+      let params, returnLogin, publicKey, emitObject: EmitObject;
+      emits('updateLoading', true);
+      try {
+        const returnPublicKey = await getRSAPublicKeyApi();
+        publicKey = returnPublicKey.data;
+        params = {
+          name: formData.username,
+          pwd: getRsaPassword(publicKey, formData.password),
+        };
+        returnLogin = await loginApi(params);
+          if(returnLogin.data?.userInfo.isAdmin) {
+          emitObject = {
+            token: returnLogin.data.token,
+            routeList: adminRoutes as unknown as RouteListItem[]
+          };
+        } else {
+          emitObject = {
+            token: returnLogin.data.token,
+            routeList: commonRoutes as unknown as RouteListItem[]
+          };
         }
-        emits('afterLogin', returnObject);
-      }, 1000);
+        emits('afterLogin', emitObject);
+      } catch(err) {
+        console.log('err', err);
+      }
+      emits('updateLoading', false);
     }
-  })
+  });
 };
 
 defineExpose({
@@ -78,7 +107,7 @@ defineExpose({
         <el-input v-model="formData.username" :placeholder="$t('login.usernamePlaceholder')" prefix-icon="User" size="large"></el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="formData.password" :placeholder="$t('login.passwordPlaceholder')" prefix-icon="Search" size="large" type="password"></el-input>
+        <el-input v-model="formData.password" :placeholder="$t('login.passwordPlaceholder')" prefix-icon="Lock" size="large" type="password"></el-input>
       </el-form-item>
       <el-form-item prop="savepassword">
         <el-checkbox v-model="formData.savepassword" :label="$t('login.savePassword')"/>

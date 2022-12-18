@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n';
 import useGlobalStore from '@/stores';
-import { setLocalStorage, getLocalStorage } from '@/utils/utils'
+import { setLocalStorage, getLocalStorage } from '@/utils/storage'
 
 const emits = defineEmits<{
   (e: 'afterSwitch'): void

@@ -2,10 +2,12 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import useGlobalStore from '@/stores';
-import tempRoutes from '@/assets/json/common/tempRoutes.json';
+import { getSessionStorage } from '@/utils/storage';
+import type { RouteListItem } from '@/router/interface';
 
 const router = useRouter();
-const globalStore = useGlobalStore()
+const globalStore = useGlobalStore();
+const routeList: RouteListItem[] = getSessionStorage('routeList');
 
 const title = computed(() => {
   return function(titleCn: string, titleEn: string) {
@@ -19,7 +21,8 @@ const title = computed(() => {
   }
 })
 
-const currentRouteLevel1 = computed(() => {
+// 当前路由的一级路由
+const currentRoute = computed(() => {
   return router.currentRoute.value.matched[0].path;
 })
 </script>
@@ -28,10 +31,10 @@ const currentRouteLevel1 = computed(() => {
   <aside class="aside-box">
     <ul class="menu-list">
       <li
-        v-for="item in tempRoutes"
+        v-for="item in routeList"
         :key="item.id"
-        :class="['menu-list-item', currentRouteLevel1 == item.path ? 'is-active' : '' ]"
-        @click="router.push(item.hasChildren ? (item as any).children[0].path : item.path)">
+        :class="['menu-list-item', currentRoute == item.path ? 'is-active' : '' ]"
+        @click="router.push(item.hasChildren ? item.children[0].path : item.path)">
         {{ title(item.titleCn, item.titleEn) }}
       </li>
     </ul>

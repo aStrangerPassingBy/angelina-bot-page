@@ -68,7 +68,7 @@ import user from './components/user.vue'
       align-items: center;
       justify-content: center;
       margin: 0 20px;
-      width: 75px;
+      // width: 75px;
     }
   }
   

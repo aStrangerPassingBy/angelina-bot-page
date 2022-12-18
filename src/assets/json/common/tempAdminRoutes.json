@@ -1,0 +1,63 @@
+[
+  {
+    "id": "1",
+    "level": 1,
+    "path": "/home",
+    "name": "Home",
+    "titleCn": "首页",
+    "titleEn": "Home",
+    "hasChildren": false,
+    "componentPath": "/home/home"
+  },
+  {
+    "id": "2",
+    "level": 1,
+    "path": "/config",
+    "name": "Config",
+    "titleCn": "配置中心",
+    "titleEn": "Config Center",
+    "hasChildren": true,
+    "children": [
+      {
+        "id": "2-1",
+        "level": 2,
+        "path": "/config/noticeManage",
+        "name": "NoticeManage",
+        "titleCn": "公告管理",
+        "titleEn": "notice Manage",
+        "componentPath": "/config/noticeManage",
+        "children": []
+      },
+      {
+        "id": "2-2",
+        "level": 2,
+        "path": "/config/dictManage",
+        "name": "DictManage",
+        "titleCn": "字典项管理",
+        "titleEn": "Dict Manage",
+        "componentPath": "/config/dictManage",
+        "children": []
+      },
+      {
+        "id": "2-3",
+        "level": 2,
+        "path": "/config/poolManage",
+        "name": "PoolManage",
+        "titleCn": "卡池管理",
+        "titleEn": "Pool Manage",
+        "componentPath": "/config/poolManage",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "level": 2,
+    "path": "/console",
+    "name": "Console",
+    "titleCn": "控制台",
+    "titleEn": "Console",
+    "hasChildren": false,
+    "componentPath": "/console/console"
+  }
+]

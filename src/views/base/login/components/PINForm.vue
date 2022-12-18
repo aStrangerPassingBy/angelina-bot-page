@@ -2,7 +2,7 @@
 import { ref, reactive, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { FormRules } from 'element-plus'
-import tempRoutes from '@/assets/json/common/tempRoutes.json'
+import tempAdminRoutes from '@/assets/json/common/tempAdminRoutes.json'
 
 const emits = defineEmits<{
   // 登录成功后会掉
@@ -46,7 +46,7 @@ const verify = () => {
       setTimeout(() => {
         const returnObject = {
           token: '',
-          routes: tempRoutes
+          routeList: tempAdminRoutes
         }
         emits('afterLogin', returnObject)
       }, 1000);

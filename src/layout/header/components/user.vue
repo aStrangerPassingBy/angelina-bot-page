@@ -2,8 +2,8 @@
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import useGlobalStore from '@/stores';
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { clearSessionStorage } from '@/utils/utils';
+import { ElMessageBox } from 'element-plus'
+import { clearSessionStorage } from '@/utils/storage';
 
 const router = useRouter();
 const globalStore = useGlobalStore();
@@ -19,24 +19,16 @@ const editPW = () => {
 
 }
 const handleLogout = () => {
-  ElMessageBox.confirm(
-    '确定要退出登录么',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-    }
-  ).then(() => {
+  ElMessageBox.confirm('确定要退出登录么', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+  }).then(() => {
     globalStore.clearToken();
     clearSessionStorage();
     router.push({
       path: '/login'
     })
-  }).catch(() => {
-    ElMessage({
-      type: 'info',
-      message: 'Delete canceled',
-    })
-  })
+  }).catch(() => {})
 }
 </script>
 
@@ -70,6 +62,10 @@ const handleLogout = () => {
           </span>
         </template>
       </el-dialog>
+      <li class="user-menu-item" @click="editUN">
+        <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
+        {{ $t('header.editUN') }}
+      </li>
       <li class="user-menu-item" @click="editUN">
         <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
         {{ $t('header.editUN') }}

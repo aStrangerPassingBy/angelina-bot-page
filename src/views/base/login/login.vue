@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import useGlobalStore from '@/stores';
 import registerForm from './components/registerForm.vue'
 import PWForm from './components/PWForm.vue';
 import PINForm from './components/PINForm.vue';
-import tempRoutes from '@/assets/json/common/tempRoutes.json';
-import { setSessionStorage } from '@/utils/utils';
+import type { RouteListItem } from '@/router/interface';
+import { setSessionStorage } from '@/utils/storage';
+
+type EmitObject = {
+  token: string,
+  routeList: RouteListItem[]
+}
 
 const router = useRouter();
-const globalStore = useGlobalStore();
 
 const PWFormRef = ref();
 const PINFormRef = ref();
@@ -24,9 +27,12 @@ const register = () => {
   visible.registerVisible = true;
   afterSwitch();
 };
-// 切换登录方式
-const switchLoginType = (type: 'PW' | 'PIN') => {
-  loginType.value = type;
+// 完成注册后，直接使用返回的token登录
+const afterRegister = (emitObject: any) => {
+  afterLogin(emitObject);
+}
+const cancelRegister = () => {
+  visible.registerVisible = false;
 }
 // 切换语言后重置表单
 const afterSwitch = () => {
@@ -40,49 +46,56 @@ const afterSwitch = () => {
 const updateLoading = (state: boolean) => {
   loading.value = state;
 }
+
+// 切换登录方式
+const switchLoginType = (type: 'PW' | 'PIN') => {
+  loginType.value = type;
+}
 // 登录成功后回调
-const afterLogin = (returnObject: any) => {
-  loading.value = false;
-  globalStore.setToken(returnObject.token);
-  setSessionStorage('routes', returnObject.routes);
-  setSessionStorage('token', returnObject.token);
+const afterLogin = (emitObject: EmitObject) => {
+  // 将登录后获取的token和路由表存在pinia和sessionStorage中
+  const { routeList, token } = emitObject;
+  setSessionStorage('routeList', routeList);
+  setSessionStorage('token', token);
+
   const modules = import.meta.glob('@/views/modules/*/*.vue');
-  returnObject.routes.forEach((item: any) => {
+  routeList.forEach((item: RouteListItem) => {
+    // 添加一级路由
     router.addRoute({
-      path: item.path,
-      name: item.name,
-      component: () => import('@/layout/layout.vue'),
-      meta: {
-        id: item.id,
-        titleCn: item.titleCn,
-        titleEn: item.titleEn,
-        hasChildren: item.hasChildren,
-        component: item.component
-      }
+    path: item.path,
+    name: item.name,
+    component: () => import('@/layout/layout.vue'),
+    meta: {
+      id: item.id,
+      level: item.level,
+      titleCn: item.titleCn,
+      titleEn: item.titleEn,
+      hasChildren: item.hasChildren,
+      children: item.children,
+      componentPath: item.componentPath // 如果有二级路由则为null
+    }
     });
+    // 如果当前路由有二级路由
     if(item.hasChildren) {
-      item?.children?.forEach((innerItem: any) => {
+      item.children.forEach((innerItem: RouteListItem) => {
+        // 添加二级路由
         router.addRoute(item.name, {
           path: innerItem.path,
           name: innerItem.name,
-          component: modules[`/src/views/modules/${innerItem.component}.vue`],
+          component: modules[`/src/views/modules${innerItem.componentPath}.vue`],
           meta: {
             id: innerItem.id,
+            level: innerItem.level,
             titleCn: innerItem.titleCn,
-            titleEn: innerItem.titleEN,
+            titleEn: innerItem.titleEn,
           }
         });
       });
     }
   });
   router.push({
-    path: tempRoutes[0].hasChildren ? (tempRoutes[0] as any).children[0].path : tempRoutes[0].path
+    path: routeList[0].hasChildren ? routeList[0].children[0].path : routeList[0].path
   })
-}
-const cancelRegister = () => {
-  visible.registerVisible = false;
-  console.log('cancelRegister');
-  
 }
 </script>
 
@@ -114,7 +127,7 @@ const cancelRegister = () => {
     :close-on-click-modal="false"
     :append-to-body="true"
     width="30%">
-    <registerForm @cancelRegister="cancelRegister"></registerForm>
+    <registerForm @cancelRegister="cancelRegister" @afterRegister="afterRegister"></registerForm>
   </el-dialog>
 </template>
 
