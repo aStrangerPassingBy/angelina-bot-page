@@ -1,30 +1,21 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import { useRouter } from 'vue-router';
 import registerForm from './components/registerForm.vue'
 import PWForm from './components/PWForm.vue';
 import PINForm from './components/PINForm.vue';
 import type { RouteListItem } from '@/router/interface';
 import { setSessionStorage } from '@/utils/storage';
+import { useRoutes } from '@/hooks/useRoutes'
 
 type EmitObject = {
   token: string,
   routeList: RouteListItem[]
 }
 
-const router = useRouter();
-
-const PWFormRef = ref();
-const PINFormRef = ref();
-const loading = ref<boolean>(false);
-const loginType = ref<'PW' | 'PIN'>('PW')
-const visible = reactive({
-  registerVisible: false,
-});
-
-// 注册账号
+/* 注册账号 */
+const registerVisible = ref(false);
 const register = () => {
-  visible.registerVisible = true;
+  registerVisible.value = true;
   afterSwitch();
 };
 // 完成注册后，直接使用返回的token登录
@@ -32,9 +23,10 @@ const afterRegister = (emitObject: any) => {
   afterLogin(emitObject);
 }
 const cancelRegister = () => {
-  visible.registerVisible = false;
+  registerVisible.value = false;
 }
-// 切换语言后重置表单
+
+/* 语言切换 */
 const afterSwitch = () => {
   try {
     PWFormRef.value.reset();
@@ -42,60 +34,28 @@ const afterSwitch = () => {
     PINFormRef.value.reset();
   }
 }
-// 更新loading状态
+
+/* loading */
+const loading = ref<boolean>(false);
 const updateLoading = (state: boolean) => {
   loading.value = state;
 }
 
-// 切换登录方式
+/* 登录 */
+const PWFormRef = ref();
+const PINFormRef = ref();
+const loginType = ref<'PW' | 'PIN'>('PW')
 const switchLoginType = (type: 'PW' | 'PIN') => {
   loginType.value = type;
 }
+const routes = useRoutes();
 // 登录成功后回调
 const afterLogin = (emitObject: EmitObject) => {
   // 将登录后获取的token和路由表存在pinia和sessionStorage中
   const { routeList, token } = emitObject;
   setSessionStorage('routeList', routeList);
   setSessionStorage('token', token);
-
-  const modules = import.meta.glob('@/views/modules/*/*.vue');
-  routeList.forEach((item: RouteListItem) => {
-    // 添加一级路由
-    router.addRoute({
-    path: item.path,
-    name: item.name,
-    component: () => import('@/layout/layout.vue'),
-    meta: {
-      id: item.id,
-      level: item.level,
-      titleCn: item.titleCn,
-      titleEn: item.titleEn,
-      hasChildren: item.hasChildren,
-      children: item.children,
-      componentPath: item.componentPath // 如果有二级路由则为null
-    }
-    });
-    // 如果当前路由有二级路由
-    if(item.hasChildren) {
-      item.children.forEach((innerItem: RouteListItem) => {
-        // 添加二级路由
-        router.addRoute(item.name, {
-          path: innerItem.path,
-          name: innerItem.name,
-          component: modules[`/src/views/modules${innerItem.componentPath}.vue`],
-          meta: {
-            id: innerItem.id,
-            level: innerItem.level,
-            titleCn: innerItem.titleCn,
-            titleEn: innerItem.titleEn,
-          }
-        });
-      });
-    }
-  });
-  router.push({
-    path: routeList[0].hasChildren ? routeList[0].children[0].path : routeList[0].path
-  })
+  routes.updateRoutes();
 }
 </script>
 
@@ -114,7 +74,7 @@ const afterLogin = (emitObject: EmitObject) => {
       </nav>
       <header class="login-header">
         <img src="@/assets/images/base/logo.svg" alt="">
-        <h1>angelina-bot</h1>
+        <h1>title-login</h1>
       </header>
       <!-- <component :is="loginType" @afterLogin="afterLogin"></component> -->
       <PWForm v-if="loginType == 'PW'" @afterLogin="afterLogin" @updateLoading="updateLoading" ref="PWFormRef"></PWForm>
@@ -122,7 +82,7 @@ const afterLogin = (emitObject: EmitObject) => {
     </div>
   </div>
   <el-dialog
-    v-model="visible.registerVisible"
+    v-model="registerVisible"
     :title="$t('login.register')"
     :close-on-click-modal="false"
     :append-to-body="true"

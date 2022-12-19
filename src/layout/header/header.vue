@@ -9,12 +9,12 @@ import user from './components/user.vue'
 <template>
   <header class="header-box">
     <div class="header-left">
-      <img src="@/assets/images/base/angelina.jpg" alt="">
+      <img src="@/assets/images/base/logo.svg" alt="">
       <h1>
-        angelina-bot
+        title
       </h1>
       <h2>
-        -{{ $t('common.description') }}
+        -{{ $t('header.description') }}
       </h2>
     </div>
     <ul class="header-right">
@@ -54,7 +54,7 @@ import user from './components/user.vue'
     img {
       width: 40px;
       height: 40px;
-      border-radius: 50%;
+      // border-radius: 50%;
       margin-right: 10px;
     }
     h1 {

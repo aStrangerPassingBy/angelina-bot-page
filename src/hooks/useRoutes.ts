@@ -8,23 +8,23 @@ export const useRoutes = () => {
 	
   // 根据sessionStorage中的路由添加路由表
   const updateRoutes = () => {
-    let routes = getSessionStorage('routes');
-    routes = getSessionStorage('routes');
+    const routeList = getSessionStorage('routeList');
     const modules = import.meta.glob('@/views/modules/*/*.vue');
-    routes.forEach((item: RouteListItem) => {
+    routeList.forEach((item: RouteListItem) => {
       // 添加一级路由
       router.addRoute({
-        path: item.path,
-        name: item.name,
-        component: () => import('@/layout/layout.vue'),
-        meta: {
-          id: item.id,
-          level: item.level,
-          titleCn: item.titleCn,
-          titleEn: item.titleEn,
-          hasChildren: item.hasChildren,
-          componentPath: item.componentPath // 如果有二级路由则为null
-        }
+      path: item.path,
+      name: item.name,
+      component: () => import('@/layout/layout.vue'),
+      meta: {
+        id: item.id,
+        level: item.level,
+        titleCn: item.titleCn,
+        titleEn: item.titleEn,
+        hasChildren: item.hasChildren,
+        children: item.children,
+        componentPath: item.componentPath // 如果有二级路由则为null
+      }
       });
       // 如果当前路由有二级路由
       if(item.hasChildren) {
@@ -45,17 +45,20 @@ export const useRoutes = () => {
       }
     });
     router.push({
-      path: routes[0].hasChildren ? routes[0].children[0].path : routes[0].path
+      path: routeList[0].hasChildren ? routeList[0].children[0].path : routeList[0].path
     })
   }
   
   // 清除所有非基础路由表
   const removeRoutes = () => {
     const removeRoutes = router.getRoutes().filter(item => {
-      return item.meta.level != 0
+      return item.meta.level == 1 || item.meta.level == 2;
     })
     removeRoutes.forEach(item => {
       router.removeRoute(item.name as string);
+    })
+    router.replace({
+      name: 'Login'
     })
   }
 	

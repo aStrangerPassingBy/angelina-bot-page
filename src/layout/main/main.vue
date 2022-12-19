@@ -6,7 +6,6 @@ const router = useRouter();
 
 const modules = import.meta.glob('@/views/modules/*/*.vue');
 
-
 const currentRoutePath = computed(() => {
   return router.currentRoute.value.matched[0].meta
 })

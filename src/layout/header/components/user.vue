@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { reactive } from 'vue';
+import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import useGlobalStore from '@/stores';
 import { ElMessageBox } from 'element-plus'
@@ -8,12 +8,12 @@ import { clearSessionStorage } from '@/utils/storage';
 const router = useRouter();
 const globalStore = useGlobalStore();
 
-const visible = reactive({
-  bindQQ: false
-})
+const visible = ref(false)
+const currentComponent = ref('')
 
 const editUN = () => {
-
+  currentComponent.value = 'bindQQ'
+  visible.value = true;
 }
 const editPW = () => {
 
@@ -42,30 +42,11 @@ const handleLogout = () => {
       <img class="user-avatar" src="@/assets/images/base/default-avatar.png" alt="">
     </template>
     <ul class="user-menu">
-      <li class="user-menu-item" @click="visible.bindQQ = true">
+      <li class="user-menu-item" @click="editUN">
         <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
         {{ $t('header.bindQQ') }}
       </li>
-      <el-dialog
-        v-model="visible.bindQQ"
-        :title="$t('header.bindQQ')"
-        :close-on-click-modal="false"
-        :append-to-body="true"
-        width="30%">
-        <span>bind</span>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="visible.bindQQ = false">{{ $t('common.cancel') }}</el-button>
-            <el-button type="primary" @click="visible.bindQQ = false">
-              {{ $t('common.confirm') }}
-            </el-button>
-          </span>
-        </template>
-      </el-dialog>
-      <li class="user-menu-item" @click="editUN">
-        <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
-        {{ $t('header.editUN') }}
-      </li>
+      
       <li class="user-menu-item" @click="editUN">
         <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
         {{ $t('header.editUN') }}
@@ -79,8 +60,22 @@ const handleLogout = () => {
         {{ $t('header.logout') }}
       </li>
     </ul>
+    <el-dialog
+      v-model="visible"
+      :title="$t('header.bindQQ')"
+      :close-on-click-modal="false"
+      :append-to-body="true"
+      width="30%">
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="visible = false">{{ $t('header.cancel') }}</el-button>
+          <el-button type="primary" @click="visible = false">
+            {{ $t('header.confirm') }}
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </el-popover>
-  
 </template>
 
 <style scoped lang='scss'>

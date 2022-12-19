@@ -6,7 +6,6 @@ import type { FormRules } from 'element-plus'
 import adminRoutes from '@/assets/json/common/tempAdminRoutes.json'
 import commonRoutes from '@/assets/json/common/tempCommonRoutes.json'
 import { registerApi, getRSAPublicKeyApi } from '@/api/common/common';
-import { setSessionStorage, getSessionStorage } from '@/utils/storage';
 import { getRsaPassword } from '@/utils/rsaEncrypt'
 import type { RouteListItem } from '@/router/interface';
 
@@ -24,8 +23,6 @@ const emits = defineEmits<{
   (e: 'afterRegister', EmitObject: EmitObject): void,
   (e: 'cancelRegister'): void,
 }>()
-
-
 
 const i18n = useI18n();
 

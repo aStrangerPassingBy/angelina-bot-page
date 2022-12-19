@@ -6,9 +6,9 @@ export default {
   },
   login: {
     reset: 'reset',
+    verify: 'verify',
     confirm: 'confirm',
     cancel: 'cancel',
-    verify: 'verify',
     register: 'register',
     username: 'username',
     password: 'password',
@@ -25,8 +25,16 @@ export default {
     editUN: 'edit username',
     editPW: 'edit password',
     logout: 'logout',
+    confirm: 'confirm',
+    cancel: 'cancel',
     about: 'about',
     download: 'download',
-    document: 'document'
+    document: 'document',
+    description: 'just description'
+  },
+  config: {
+    detail: 'detail',
+    edit: 'edit',
+    delete: 'delete'
   }
 }

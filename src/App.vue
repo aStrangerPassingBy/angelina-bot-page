@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
 import useGlobalStore from '@/stores';
 import { getBrowserLang } from './utils/utils';
 import { getLocalStorage, setLocalStorage, getSessionStorage } from './utils/storage';
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import en from 'element-plus/dist/locale/en.mjs'
-import type { RouteListItem } from '@/router/interface';
+import { useRoutes } from '@/hooks/useRoutes'
 
-const router = useRouter();
+const routes = useRoutes();
 const globalStore = useGlobalStore();
 
 // 设置element的语言类型
@@ -36,45 +35,9 @@ onMounted(() => {
   // 获取本地存储的路由表，如果有路由表则添加到router中
   // 防止刷新页面后路由表消失
   const routeList = getSessionStorage('routeList');
-  const modules = import.meta.glob('@/views/modules/*/*.vue');
+  
   if(routeList?.length) {
-    routeList.forEach((item: RouteListItem) => {
-      // 添加一级路由
-      router.addRoute({
-        path: item.path,
-        name: item.name,
-        component: () => import('@/layout/layout.vue'),
-        meta: {
-          id: item.id,
-          level: item.level,
-          titleCn: item.titleCn,
-          titleEn: item.titleEn,
-          hasChildren: item.hasChildren,
-          children: item.children,
-          componentPath: item.componentPath // 如果有二级路由则为null
-        }
-      });
-      // 如果当前路由有二级路由
-      if(item.hasChildren) {
-        item.children.forEach((innerItem: RouteListItem) => {
-          // 添加二级路由
-          router.addRoute(item.name, {
-            path: innerItem.path,
-            name: innerItem.name,
-            component: modules[`/src/views/modules${innerItem.componentPath}.vue`],
-            meta: {
-              id: innerItem.id,
-              level: innerItem.level,
-              titleCn: innerItem.titleCn,
-              titleEn: innerItem.titleEn,
-            }
-          });
-        });
-      }
-    });
-    router.push({
-      path: routeList[0].hasChildren ? (routeList[0] as any).children[0].path : routeList[0].path
-    });
+    routes.updateRoutes();
   }
 })
 </script>

@@ -7,7 +7,6 @@ import commonRoutes from '@/assets/json/common/tempCommonRoutes.json'
 import { getRSAPublicKeyApi, loginApi } from '@/api/common/common';
 import { getRsaPassword } from '@/utils/rsaEncrypt';
 import type { RouteListItem } from '@/router/interface';
-import { getSessionStorage, setSessionStorage } from '@/utils/storage';
 
 type EmitObject = {
   token: string,

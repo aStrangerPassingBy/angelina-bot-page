@@ -26,6 +26,7 @@ class RequestHttp {
     // 请求拦截器
     this.service.interceptors.request.use(
       (config: AxiosRequestConfig) => {
+        console.log('api config', config);
         axiosCanceler.addPending(config);
         const token: string = getSessionStorage('token');
         return { ...config, headers: { ...config.headers, "Authorization": token } };
@@ -46,7 +47,7 @@ class RequestHttp {
             clearSessionStorage();
             console.log('router', router);
             const removeRoutes = router.getRoutes().filter(item => {
-              return item.meta.level != 0
+              return item.meta.level == 1 || item.meta.level == 2;
             })
             removeRoutes.forEach(item => {
               router.removeRoute(item.name as string);
