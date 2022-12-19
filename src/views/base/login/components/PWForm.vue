@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import type { FormRules } from 'element-plus';
 import adminRoutes from '@/assets/json/common/tempAdminRoutes.json'
 import commonRoutes from '@/assets/json/common/tempCommonRoutes.json'
-import { getRSAPublicKeyApi, loginApi } from '@/api/common/common';
+import { getRSAPublicKeyApi, loginApi } from '@/api/common';
 import { getRsaPassword } from '@/utils/rsaEncrypt';
 import type { RouteListItem } from '@/router/interface';
 

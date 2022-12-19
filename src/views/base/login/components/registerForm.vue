@@ -5,7 +5,7 @@ import { ElMessage } from 'element-plus'
 import type { FormRules } from 'element-plus'
 import adminRoutes from '@/assets/json/common/tempAdminRoutes.json'
 import commonRoutes from '@/assets/json/common/tempCommonRoutes.json'
-import { registerApi, getRSAPublicKeyApi } from '@/api/common/common';
+import { registerApi, getRSAPublicKeyApi } from '@/api/common';
 import { getRsaPassword } from '@/utils/rsaEncrypt'
 import type { RouteListItem } from '@/router/interface';
 

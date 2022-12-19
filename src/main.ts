@@ -7,6 +7,7 @@ import i18n from './language'
 import components from './components'
 
 import './styles/base/app.scss'
+import "nprogress/nprogress.css";
 import 'element-plus/dist/index.css'
 
 const app = createApp(App);
