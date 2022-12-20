@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { ref, reactive, computed, onMounted } from 'vue';
-import { ElMessageBox } from 'element-plus';
-import { createNoticeApi, deleteNoticeApi, editNoticeApi, getNoticeApi, createNoticeImgApi } from '@/api/modules/config'
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { createNoticeApi, deleteNoticeApi, editNoticeApi, getNoticeApi, getNoticeImgApi } from '@/api/modules/config/notice'
 import createNoticeForm from './noticeManageComponents/createNoticeForm.vue'
 
 type NoticeItem = {
@@ -52,12 +52,24 @@ const editNotice = (noticeItem: NoticeItem) => {
   edit_detailVisible.value = true;
 }
 // 删除公告
-const deleteNotice = (id: string) => {
+const deleteNotice = (noticeId: string) => {
   ElMessageBox.confirm('确定要退删除该公告么', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
   }).then(() => {
+    loading.value = true;
     console.log('删除了');
+    deleteNoticeApi({noticeId}).then(res => {
+      ElMessage({
+        type: 'success',
+        message: res.data.text
+      })
+    }).catch(err => {
+      console.log('删除失败', err);
+    }).finally(() => {
+      loading.value = false;
+      init();
+    })
   }).catch(() => {
 
   })
@@ -66,6 +78,7 @@ const deleteNotice = (id: string) => {
 // 初始化
 const init = () => {
   loading.value = true;
+  noticeList.length = 0;
   getNoticeApi().then(res => {
     res.data.forEach((item: NoticeItem) => {
       noticeList.push(item);
@@ -85,7 +98,7 @@ onMounted(() => {
 <template>
   <div class="noticeManage-box" v-loading="loading">
     <header class="noticeManage-box-header">
-      <el-button type="primary" @click="createNotice">新增</el-button>
+      <!-- <el-button type="primary" @click="createNotice">新增</el-button> -->
     </header>
     <ul class="noticeList-box">
       <li class="notice-item" v-for="item in noticeList" :key="item.id">

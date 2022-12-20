@@ -16,7 +16,7 @@ const currentRoutePath = computed(() => {
   <main class="main-box">
     <div class="main-box-content">
       <template v-if="router.currentRoute.value.meta.hasChildren">
-        <router-view v-slot="{ Component }" class="content">
+        <router-view v-slot="{ Component }">
           <component :is="Component"></component>
         </router-view>
       </template>
@@ -30,7 +30,7 @@ const currentRoutePath = computed(() => {
 <style scoped lang='scss'>
 .main-box {
   box-sizing: border-box;
-  width: 100%;
+  width: 80%;
   height: 100%;
   flex: 8;
   background-color: #fff;

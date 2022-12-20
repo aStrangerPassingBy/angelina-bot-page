@@ -9,7 +9,7 @@ export function createNoticeApi(data: any) {
 // 删除公告
 const deleteNoticeUrl = '/api' + '/notice/deleteNotice';
 export function deleteNoticeApi(data: any) {
-  return httpRequest.post(deleteNoticeUrl, data);
+  return httpRequest.delete(deleteNoticeUrl, data);
 }
 
 // 修改公告
@@ -25,7 +25,7 @@ export function getNoticeApi(data?: any) {
 }
 
 // 获取公告图片
-const createNoticeImgUrl = '/api' + '/notice/createNoticeImg';
-export function createNoticeImgApi(data: any) {
-  return httpRequest.post(createNoticeImgUrl, data);
+const getNoticeImgUrl = '/api' + '/notice/getNoticeImg';
+export function getNoticeImgApi(data: any) {
+  return httpRequest.post(getNoticeImgUrl, data);
 }

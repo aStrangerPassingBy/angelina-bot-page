@@ -47,6 +47,26 @@
         "titleEn": "Pool Manage",
         "componentPath": "/config/poolManage",
         "children": []
+      },
+      {
+        "id": "2-4",
+        "level": 2,
+        "path": "/config/nicknameManage",
+        "name": "NicknameManage",
+        "titleCn": "昵称管理",
+        "titleEn": "NickName Manage",
+        "componentPath": "/config/nicknameManage",
+        "children": []
+      },
+      {
+        "id": "2-5",
+        "level": 2,
+        "path": "/config/botManage",
+        "name": "BotManage",
+        "titleCn": "机器人管理",
+        "titleEn": "Bot Manage",
+        "componentPath": "/config/botManage",
+        "children": []
       }
     ]
   },

@@ -26,7 +26,7 @@ class RequestHttp {
     // 请求拦截器
     this.service.interceptors.request.use(
       (config: AxiosRequestConfig) => {
-        console.log('api config', config);
+        // console.log('api config', config);
         axiosCanceler.addPending(config);
         const token: string = getSessionStorage('token');
         return { ...config, headers: { ...config.headers, "Authorization": token } };
@@ -42,10 +42,10 @@ class RequestHttp {
         const { data, config } = response;
         axiosCanceler.removePending(config);
         if(data.code != 200) {
+          console.log('code值不等于200');
           ElMessage.error(data.message);
           if(data.code == 301) {
             clearSessionStorage();
-            console.log('router', router);
             const removeRoutes = router.getRoutes().filter(item => {
               return item.meta.level == 1 || item.meta.level == 2;
             })
@@ -62,23 +62,24 @@ class RequestHttp {
         return data
 			},
 			(error: AxiosError) => {
+        console.log('拦截器Error');
 				Promise.reject(error);
 			}
 		);
   }
 
   // 请求方法
-	get(url: string, params?: object): Promise<any> {
-		return this.service.get(url, params);
+	get(url: string, params?: any, obj = {}): Promise<any> {
+		return this.service.get(url, { params, ...obj });
 	}
-	post(url: string, params?: object): Promise<any> {
-		return this.service.post(url, params);
+	post(url: string, params?: any, obj = {}): Promise<any> {
+		return this.service.post(url, params, obj);
 	}
-	put(url: string, params?: object): Promise<any> {
-		return this.service.put(url, params);
+	put(url: string, params?: any, obj = {}): Promise<any> {
+		return this.service.put(url, params, obj);
 	}
-	delete(url: string, params?: any,): Promise<any> {
-		return this.service.delete(url, params);
+	delete(url: string, params?: any, obj = {}): Promise<any> {
+		return this.service.delete(url, { params, ...obj });
 	}
 }
 

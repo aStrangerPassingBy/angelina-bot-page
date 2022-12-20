@@ -1,20 +1,72 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
+import { getAllPoolDataApi } from '@/api/modules/config/pool';
 import createPool from './poolManageComponents/createPool.vue';
 
-const  createPoolVisible = ref(false);
+const createPoolVisible = ref(false);
+const state = reactive({
+  loading: false,
+  tableData: [],
+  pagination: {
+    currentPage: 1,
+    pageSize: 10,
+    totalCount: 0
+  }
+})
+const handleCurrentChange = (val: number) => {
+  state.pagination.currentPage = val;
+  query()
+}
+const handleClick = () => {
+  
+}
+const query = () => {
+  state.loading = true;
+  const params = {
+    current: state.pagination.currentPage
+  }
+  getAllPoolDataApi(params).then(res => {
+    state.tableData = res.data;
+    state.pagination.totalCount = res.count;
+  }).catch((err) => {
+    console.log('err', err);
+  }).finally(() => {
+    state.loading = false;
+  })
+}
 
+const init = () => {
+  query();
+}
 
+onMounted(() => {
+  init();
+})
 </script>
 
 <template>
-  <div class="poolManage-box">
+  <div v-loading="state.loading" class="poolManage-box">
     <header class="box-header">
       <div class="btn-box">
         <el-button type="primary" @click="createPoolVisible = true">新增</el-button>
       </div>
     </header>
-    <main></main>
+    <main class="box-main">
+      <el-table :data="state.tableData" style="width: 100%;">
+        <el-table-column fixed prop="name" align="center" label="name" width="150"/>
+        <el-table-column prop="star" align="center" label="star"/>
+        <el-table-column prop="pool" align="center" label="pool"/>
+        <el-table-column prop="version" align="center" label="version"/>
+        <!-- <el-table-column fixed="right" label="操作" width="120">
+          <template #default>
+            <el-button link type="primary" size="small" @click="handleClick">删除</el-button>
+          </template>
+        </el-table-column> -->
+      </el-table>
+    </main>
+    <footer class="box-footer">
+      <el-pagination background layout="prev, pager, next" @current-change="handleCurrentChange" :total="state.pagination.totalCount"/>
+    </footer>
     <el-dialog
       v-model="createPoolVisible"
       title="新增卡池"
@@ -36,6 +88,10 @@ const  createPoolVisible = ref(false);
 
 <style lang="scss" scoped>
 .poolManage-box {
-
+  .box-footer {
+    display: flex;
+    margin: 10px;
+    justify-content: right;
+  }
 }
 </style>

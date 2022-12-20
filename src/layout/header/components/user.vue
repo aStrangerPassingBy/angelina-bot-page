@@ -4,20 +4,39 @@ import { useRouter } from 'vue-router';
 import useGlobalStore from '@/stores';
 import { ElMessageBox } from 'element-plus'
 import { clearSessionStorage } from '@/utils/storage';
+import linkToBot from './userComponents/linkToBot.vue'
+import editUsername from './userComponents/editUserame.vue'
+import editPassword from './userComponents/editPassword.vue'
 
 const router = useRouter();
 const globalStore = useGlobalStore();
 
-const visible = ref(false)
-const currentComponent = ref('')
+const visible = reactive({
+  linkToBot: false,
+  editUsername: false,
+  editPassword: false,
+})
 
-const editUN = () => {
-  currentComponent.value = 'bindQQ'
-  visible.value = true;
-}
-const editPW = () => {
+const qq = ref('');
+const name = ref('');
+const pwd = reactive({
+  oldPwd: '',
+  newPwd: '',
+});
+
+const handleLinkToBot = () => {
 
 }
+
+const handleEditUsername = () => {
+  console.log('name', name);
+  
+}
+
+const handleEditPassword = () => {
+
+}
+
 const handleLogout = () => {
   ElMessageBox.confirm('确定要退出登录么', {
     confirmButtonText: '确定',
@@ -42,34 +61,70 @@ const handleLogout = () => {
       <img class="user-avatar" src="@/assets/images/base/default-avatar.png" alt="">
     </template>
     <ul class="user-menu">
-      <li class="user-menu-item" @click="editUN">
+      <li class="user-menu-item" @click="visible.linkToBot = true">
         <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
-        {{ $t('header.bindQQ') }}
+        {{ $t('header.linkToBot') }}
       </li>
       
-      <li class="user-menu-item" @click="editUN">
+      <li class="user-menu-item" @click="visible.editUsername = true">
         <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
-        {{ $t('header.editUN') }}
+        {{ $t('header.editUsername') }}
       </li>
-      <li class="user-menu-item" @click="editPW">
+      <li class="user-menu-item" @click="visible.editPassword = true">
         <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
-        {{ $t('header.editPW') }}
+        {{ $t('header.editPassword') }}
       </li>
       <li class="user-menu-item" @click="handleLogout">
         <!-- <img src="@/assets/images/base/user-logout.svg" alt=""> -->
         {{ $t('header.logout') }}
       </li>
     </ul>
+    <!-- 绑定bot -->
     <el-dialog
-      v-model="visible"
-      :title="$t('header.bindQQ')"
+      v-model="visible.linkToBot"
+      :title="$t('header.linkToBot')"
       :close-on-click-modal="false"
       :append-to-body="true"
       width="30%">
+      <linkToBot></linkToBot>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="visible = false">{{ $t('header.cancel') }}</el-button>
-          <el-button type="primary" @click="visible = false">
+          <el-button @click="visible.linkToBot = false">{{ $t('header.cancel') }}</el-button>
+          <el-button type="primary" @click="handleLinkToBot">
+            {{ $t('header.confirm') }}
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
+    <!-- 修改账户名 -->
+    <el-dialog
+      v-model="visible.editUsername"
+      :title="$t('header.editUsername')"
+      :close-on-click-modal="false"
+      :append-to-body="true"
+      width="30%">
+      <editUsername></editUsername>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="visible.editUsername = false">{{ $t('header.cancel') }}</el-button>
+          <el-button type="primary" @click="handleEditUsername">
+            {{ $t('header.confirm') }}
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
+    <!-- 修改密码 -->
+    <el-dialog
+      v-model="visible.editPassword"
+      :title="$t('header.editPassword')"
+      :close-on-click-modal="false"
+      :append-to-body="true"
+      width="30%">
+      <editPassword></editPassword>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="visible.editPassword = false">{{ $t('header.cancel') }}</el-button>
+          <el-button type="primary" @click="handleEditPassword">
             {{ $t('header.confirm') }}
           </el-button>
         </span>

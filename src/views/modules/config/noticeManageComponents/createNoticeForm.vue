@@ -1,7 +1,7 @@
 <script setup lang='ts'>
-import { ref, reactive, computed, watch } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import { Plus } from '@element-plus/icons-vue'
-import { createNoticeApi } from '@/api/modules/config'
+import { createNoticeApi } from '@/api/modules/config/notice'
 
 import type { UploadProps, UploadUserFile } from 'element-plus'
 

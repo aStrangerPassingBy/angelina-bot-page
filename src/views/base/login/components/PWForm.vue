@@ -21,7 +21,7 @@ const emits = defineEmits<{
 type LoginForm = {
   username: string,
   password: string,
-  savepassword: boolean
+  // savepassword: boolean
 }
 
 const i18n = useI18n();
@@ -30,7 +30,7 @@ const loginFormRef = ref();
 const formData = reactive<LoginForm>({
   username: '',
   password: '',
-  savepassword: false,
+  // savepassword: false,
 });
 
 const rules = computed((): FormRules => {
@@ -108,9 +108,9 @@ defineExpose({
       <el-form-item prop="password">
         <el-input v-model="formData.password" :placeholder="$t('login.passwordPlaceholder')" prefix-icon="Lock" size="large" type="password"></el-input>
       </el-form-item>
-      <el-form-item prop="savepassword">
+      <!-- <el-form-item prop="savepassword">
         <el-checkbox v-model="formData.savepassword" :label="$t('login.savePassword')"/>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
   </main>
   <footer class="login-footer">
