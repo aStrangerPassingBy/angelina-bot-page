@@ -44,9 +44,11 @@ export const useRoutes = () => {
         });
       }
     });
-    router.push({
-      path: routeList[0].hasChildren ? routeList[0].children[0].path : routeList[0].path
-    })
+    setTimeout(() => {
+      router.push({
+        path: routeList[0].hasChildren ? routeList[0].children[0].path : routeList[0].path
+      })
+    }, 0);
   }
   
   // 清除所有非基础路由表

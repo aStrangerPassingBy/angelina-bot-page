@@ -3,14 +3,9 @@ import { ref, reactive } from 'vue';
 import registerForm from './components/registerForm.vue'
 import PWForm from './components/PWForm.vue';
 import PINForm from './components/PINForm.vue';
-import type { RouteListItem } from '@/router/interface';
+import type { EmitObject } from './interface';
 import { setSessionStorage } from '@/utils/storage';
 import { useRoutes } from '@/hooks/useRoutes'
-
-type EmitObject = {
-  token: string,
-  routeList: RouteListItem[]
-}
 
 /* 注册账号 */
 const registerVisible = ref(false);
@@ -51,10 +46,11 @@ const switchLoginType = (type: 'PW' | 'PIN') => {
 const routes = useRoutes();
 // 登录成功后回调
 const afterLogin = (emitObject: EmitObject) => {
-  // 将登录后获取的token和路由表存在pinia和sessionStorage中
-  const { routeList, token } = emitObject;
+  // 将登录后获取的token、路由表、用户信息存储在sessionStorage中
+  const { routeList, token, userInfo } = emitObject;
   setSessionStorage('routeList', routeList);
   setSessionStorage('token', token);
+  setSessionStorage('userInfo', userInfo);
   routes.updateRoutes();
 }
 </script>
@@ -74,7 +70,7 @@ const afterLogin = (emitObject: EmitObject) => {
       </nav>
       <header class="login-header">
         <img src="@/assets/images/base/logo.svg" alt="">
-        <h1>title-login</h1>
+        <h1>angelina-bot</h1>
       </header>
       <!-- <component :is="loginType" @afterLogin="afterLogin"></component> -->
       <PWForm v-if="loginType == 'PW'" @afterLogin="afterLogin" @updateLoading="updateLoading" ref="PWFormRef"></PWForm>

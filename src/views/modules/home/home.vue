@@ -1,19 +1,19 @@
 <script setup lang='ts'>
 import { onMounted } from 'vue';
-import { getBotBoardApi, getBotListApi, getFuncListApi, getSomeOneFuncListApi } from '@/api/modules/bot';
+import { getBotBoardApi, getBotListApi, getFuncListApi, getSomeOneFuncListApi } from '@/api/modules/config/bot';
 import notice from './components/notice.vue';
 
 onMounted(() => {
-  getBotBoardApi().then(res => {
+  getBotBoardApi().then((res: any) => {
     console.log('getBotBoardApi', res);
   })
-  getBotListApi().then(res => {
+  getBotListApi().then((res: any) => {
     console.log('getBotListApi', res);
   })
-  getFuncListApi().then(res => {
+  getFuncListApi().then((res: any) => {
     console.log('getFuncListApi', res);
   })
-  getSomeOneFuncListApi().then(res => {
+  getSomeOneFuncListApi().then((res: any) => {
     console.log('getSomeOneFuncListApi', res);
   })
 })

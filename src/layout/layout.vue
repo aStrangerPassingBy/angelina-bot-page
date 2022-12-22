@@ -52,7 +52,6 @@ const title = computed(() => {
   display: flex;
   width: 100%;
   height: 100%;
-  min-width: 1024px;
   .el-header {
     height: 60px;
     padding: unset;

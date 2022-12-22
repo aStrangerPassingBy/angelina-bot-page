@@ -17,3 +17,9 @@ const getRSAPublicKeyUrl = '/api' + '/login/getRSAPublicKey';
 export function getRSAPublicKeyApi() {
   return httpRequest.get(getRSAPublicKeyUrl);
 }
+
+// 文件下载
+const downloadUrl = '/api' + '/file/download';
+export function downloadApi(data: any, config: any) {
+  return httpRequest.post(downloadUrl, data, config);
+}

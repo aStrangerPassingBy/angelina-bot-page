@@ -7,10 +7,12 @@ import commonRoutes from '@/assets/json/common/tempCommonRoutes.json'
 import { getRSAPublicKeyApi, loginApi } from '@/api/common';
 import { getRsaPassword } from '@/utils/rsaEncrypt';
 import type { RouteListItem } from '@/router/interface';
+import { getSessionStorage, setSessionStorage } from '@/utils/storage';
 
 type EmitObject = {
   token: string,
-  routeList: RouteListItem[]
+  routeList: RouteListItem[],
+  userInfo: any
 }
 
 const emits = defineEmits<{
@@ -67,8 +69,12 @@ const confirm = () => {
       let params, returnLogin, publicKey, emitObject: EmitObject;
       emits('updateLoading', true);
       try {
-        const returnPublicKey = await getRSAPublicKeyApi();
-        publicKey = returnPublicKey.data;
+        publicKey = getSessionStorage('publicKey');
+        if(!publicKey) {
+          const res = await getRSAPublicKeyApi();
+          publicKey = res.data;
+          setSessionStorage('publicKey', publicKey);
+        }
         params = {
           name: formData.username,
           pwd: getRsaPassword(publicKey, formData.password),
@@ -77,17 +83,19 @@ const confirm = () => {
           if(returnLogin.data?.userInfo.isAdmin) {
           emitObject = {
             token: returnLogin.data.token,
-            routeList: adminRoutes as unknown as RouteListItem[]
+            routeList: adminRoutes as unknown as RouteListItem[],
+            userInfo: returnLogin.data.userInfo
           };
         } else {
           emitObject = {
             token: returnLogin.data.token,
-            routeList: commonRoutes as unknown as RouteListItem[]
+            routeList: commonRoutes as unknown as RouteListItem[],
+            userInfo: returnLogin.data.userInfo
           };
         }
         emits('afterLogin', emitObject);
       } catch(err) {
-        console.log('err', err);
+        console.log('登陆失败', err);
       }
       emits('updateLoading', false);
     }

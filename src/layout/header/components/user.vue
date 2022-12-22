@@ -1,15 +1,15 @@
 <script setup lang='ts'>
-import { ref, reactive } from 'vue';
+import { reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import useGlobalStore from '@/stores';
+import { useI18n } from 'vue-i18n';
 import { ElMessageBox } from 'element-plus'
-import { clearSessionStorage } from '@/utils/storage';
+import { getSessionStorage, removeSessionStorage, clearSessionStorage } from '@/utils/storage';
 import linkToBot from './userComponents/linkToBot.vue'
 import editUsername from './userComponents/editUserame.vue'
 import editPassword from './userComponents/editPassword.vue'
 
 const router = useRouter();
-const globalStore = useGlobalStore();
+const i18n = useI18n();
 
 const visible = reactive({
   linkToBot: false,
@@ -17,33 +17,21 @@ const visible = reactive({
   editPassword: false,
 })
 
-const qq = ref('');
-const name = ref('');
-const pwd = reactive({
-  oldPwd: '',
-  newPwd: '',
-});
-
-const handleLinkToBot = () => {
-
+const closeDialog = () => {
+  visible.linkToBot = false;
+  visible.editUsername = false;
+  visible.editPassword = false;
 }
 
-const handleEditUsername = () => {
-  console.log('name', name);
-  
-}
-
-const handleEditPassword = () => {
-
-}
-
+// 退出登录
 const handleLogout = () => {
-  ElMessageBox.confirm('确定要退出登录么', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm(`${i18n.t('header.confirmLogout')}`, {
+    confirmButtonText: `${i18n.t('header.confirm')}`,
+    cancelButtonText: `${i18n.t('header.cancel')}`,
   }).then(() => {
-    globalStore.clearToken();
-    clearSessionStorage();
+    // clearSessionStorage();
+    removeSessionStorage('token');
+    removeSessionStorage('routes');
     router.push({
       path: '/login'
     })
@@ -60,6 +48,10 @@ const handleLogout = () => {
       <!-- <el-avatar :size="35" src-set="@/assets/images/base/default-avatar.png"/> -->
       <img class="user-avatar" src="@/assets/images/base/default-avatar.png" alt="">
     </template>
+    <div class="userInfo-box">
+      <img class="user-avatar" src="@/assets/images/base/default-avatar.png" alt="">
+      <div>{{ getSessionStorage('userInfo').name }}</div>
+    </div>
     <ul class="user-menu">
       <li class="user-menu-item" @click="visible.linkToBot = true">
         <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
@@ -85,16 +77,9 @@ const handleLogout = () => {
       :title="$t('header.linkToBot')"
       :close-on-click-modal="false"
       :append-to-body="true"
+      destroy-on-close
       width="30%">
-      <linkToBot></linkToBot>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="visible.linkToBot = false">{{ $t('header.cancel') }}</el-button>
-          <el-button type="primary" @click="handleLinkToBot">
-            {{ $t('header.confirm') }}
-          </el-button>
-        </span>
-      </template>
+      <linkToBot @closeDialog="closeDialog"></linkToBot>
     </el-dialog>
     <!-- 修改账户名 -->
     <el-dialog
@@ -102,16 +87,9 @@ const handleLogout = () => {
       :title="$t('header.editUsername')"
       :close-on-click-modal="false"
       :append-to-body="true"
+      destroy-on-close
       width="30%">
-      <editUsername></editUsername>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="visible.editUsername = false">{{ $t('header.cancel') }}</el-button>
-          <el-button type="primary" @click="handleEditUsername">
-            {{ $t('header.confirm') }}
-          </el-button>
-        </span>
-      </template>
+      <editUsername @closeDialog="closeDialog"></editUsername>
     </el-dialog>
     <!-- 修改密码 -->
     <el-dialog
@@ -119,16 +97,9 @@ const handleLogout = () => {
       :title="$t('header.editPassword')"
       :close-on-click-modal="false"
       :append-to-body="true"
+      destroy-on-close
       width="30%">
-      <editPassword></editPassword>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="visible.editPassword = false">{{ $t('header.cancel') }}</el-button>
-          <el-button type="primary" @click="handleEditPassword">
-            {{ $t('header.confirm') }}
-          </el-button>
-        </span>
-      </template>
+      <editPassword @closeDialog="closeDialog"></editPassword>
     </el-dialog>
   </el-popover>
 </template>
@@ -139,6 +110,11 @@ const handleLogout = () => {
   height: 35px;
   border-radius: 50%;
   cursor: pointer;
+}
+.userInfo-box {
+  padding: 10px 0 ;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
 }
 .user-menu {
   .user-menu-item {

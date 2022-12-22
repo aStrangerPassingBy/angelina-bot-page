@@ -21,19 +21,26 @@ export default {
     savePassword: 'save password',
   },
   header: {
+    // 头部按钮
     linkToBot: 'link to bot',
     editUsername: 'edit username',
     editPassword: 'edit password',
-    logout: 'logout',
+    logout: 'log out',
     confirm: 'confirm',
     cancel: 'cancel',
     about: 'about',
     download: 'download',
     document: 'document',
     description: 'just description',
+    // 绑定qq
+    linkQQPlaceholder: 'please enter qq',
+    checklinkQQ: 'please enter qq!!!',
+    // 更改账户名
     newUsername: 'new username',
     newUsernamePlaceholder: 'please enter new username',
     checkNewUsername: 'please enter new username!!!',
+    confirmEditUsername: 'Are you sure to edit your username?',
+    // 更改密码
     oldPassword: 'old password',
     newPassword: 'new password',
     confirmPassword: 'confirm password',
@@ -41,6 +48,10 @@ export default {
     newPasswordPlaceholder: 'please enter your new password',
     checkOldPassword: 'please enter your old password!!!',
     checkNewPassword: 'please enter your new password!!!',
+    confirmEditPassword: 'Are you sure to edit your password?',
+    InconsistentPassword: 'Inconsistent password',
+
+    confirmLogout: 'Are you sure to log out?'
   },
   config: {
     detail: 'detail',

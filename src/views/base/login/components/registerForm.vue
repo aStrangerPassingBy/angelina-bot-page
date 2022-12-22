@@ -32,7 +32,7 @@ const formData = reactive<LoginForm>({
   username: '',
   password: '',
   confirmPassword: '',
-})
+});
 
 const rules = computed(():FormRules => {
   return {
@@ -61,7 +61,7 @@ const rules = computed(():FormRules => {
       }
     ]
   }
-})
+});
 
 const confirmPasswordEnter = (rule: any, value: any, callback: any) => {
   if(value === '') {
@@ -120,7 +120,7 @@ const cancel = () => {
 
 <template>
   <div class="register-box" v-loading="loading">
-    <el-form :hide-required-asterisk="true" :rules="rules" :model="formData" ref="registerFormRef">
+    <el-form hide-required-asterisk :rules="rules" :model="formData" ref="registerFormRef">
       <el-form-item :label="$t('login.username')" prop="username">
         <el-input v-model="formData.username" :placeholder="$t('login.usernamePlaceholder')" prefix-icon="User" size="large"></el-input>
       </el-form-item>

@@ -1,10 +1,9 @@
-import axios from 'axios'
+import axios from 'axios';
 import { AxiosCanceler } from './axiosCancel';
 import type { AxiosInstance, AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios'
-import { getSessionStorage } from '@/utils/storage';
+import { getSessionStorage, removeSessionStorage, clearSessionStorage } from '@/utils/storage';
 import { ElMessage } from "element-plus";
-import router from '@/router'
-import { clearSessionStorage } from '@/utils/storage';
+import router from '@/router';
 
 const axiosCanceler = new AxiosCanceler();
 
@@ -45,7 +44,9 @@ class RequestHttp {
           console.log('code值不等于200');
           ElMessage.error(data.message);
           if(data.code == 301) {
-            clearSessionStorage();
+            // clearSessionStorage();
+            removeSessionStorage('token');
+            removeSessionStorage('routes');
             const removeRoutes = router.getRoutes().filter(item => {
               return item.meta.level == 1 || item.meta.level == 2;
             })

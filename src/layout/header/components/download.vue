@@ -11,10 +11,7 @@
 
 <style scoped lang='scss'>
 .download-box {
-  img {
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
-  }
+  user-select: none;
+  cursor: pointer;
 }
 </style>
