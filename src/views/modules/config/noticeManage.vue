@@ -31,11 +31,8 @@ const detailNoticeItem = reactive<DetailNoticeItem>({
 const createNotice = () => {
   createVisible.value = true;
 }
-const afterCreate = () => {
-  cancelCreate();
-  init();
-}
-const cancelCreate = () => {
+
+const cancelSet = () => {
   createVisible.value = false;
 }
 
@@ -53,7 +50,7 @@ const editNotice = (noticeItem: NoticeItem) => {
 }
 // 删除公告
 const deleteNotice = (noticeId: string) => {
-  ElMessageBox.confirm('确定要退删除该公告么', {
+  ElMessageBox.confirm('确定要删除该公告么', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
   }).then(() => {
@@ -73,6 +70,17 @@ const deleteNotice = (noticeId: string) => {
   }).catch(() => {
 
   })
+}
+
+const noticeImg = () => {
+  noticeList.forEach(item => {
+    getNoticeImgApi({id: item.id})
+  })
+}
+
+const afterSet = () => {
+  cancelSet();
+  init();
 }
 
 // 初始化
@@ -98,7 +106,7 @@ onMounted(() => {
 <template>
   <div class="noticeManage-box" v-loading="loading">
     <header class="noticeManage-box-header">
-      <!-- <el-button type="primary" @click="createNotice">新增</el-button> -->
+      <el-button type="primary" @click="createNotice">新增</el-button>
     </header>
     <ul class="noticeList-box">
       <li class="notice-item" v-for="item in noticeList" :key="item.id">
@@ -126,7 +134,7 @@ onMounted(() => {
       :append-to-body="true"
       :destroy-on-close="true"
       width="400px">
-      <createNoticeForm @afterCreate="afterCreate"></createNoticeForm>
+      <createNoticeForm @cancelSet="cancelSet" @afterSet="afterSet"></createNoticeForm>
     </el-dialog>
     <el-dialog
       v-model="edit_detailVisible"

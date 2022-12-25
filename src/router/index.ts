@@ -2,7 +2,6 @@ import router from './router'
 import NProgress from "nprogress";
 import { AxiosCanceler } from "@/api/axiosCancel";
 import { getSessionStorage } from '@/utils/storage';
-// import useGlobalStore from '@/stores'
 
 NProgress.configure({
 	easing: "ease", // 动画方式
@@ -18,8 +17,7 @@ router.beforeEach((to, from, next) => {
   NProgress.start();
 	// * 在跳转路由之前，清除所有的请求
 	axiosCanceler.removeAllPending();
-  
-  // const globalStore = useGlobalStore();
+  console.log('切换路由了');
   if(!getSessionStorage('token') && to.path != '/login' && to.path != '/404') {
     next({
       path: '/login'

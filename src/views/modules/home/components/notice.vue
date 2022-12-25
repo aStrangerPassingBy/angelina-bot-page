@@ -63,10 +63,12 @@ onMounted(() => {
     }
   }
   .notice-main {
+    box-sizing: border-box;
     height: 20%;
     width: 100%;
     padding: 10px;
     background: #e9e9eb;
+    border: 2px solid #fff;
     h2 {
       overflow: hidden;
       text-overflow: ellipsis;

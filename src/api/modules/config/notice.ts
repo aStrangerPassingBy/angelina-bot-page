@@ -2,8 +2,8 @@ import httpRequest from '@/api/index'
 
 // 新增公告
 const createNoticeUrl = '/api' + '/notice/createNotice';
-export function createNoticeApi(data: any) {
-  return httpRequest.post(createNoticeUrl, data);
+export function createNoticeApi(data: any, config: any) {
+  return httpRequest.post(createNoticeUrl, data, config);
 }
 
 // 删除公告
@@ -27,5 +27,5 @@ export function getNoticeApi(data?: any) {
 // 获取公告图片
 const getNoticeImgUrl = '/api' + '/notice/getNoticeImg';
 export function getNoticeImgApi(data: any) {
-  return httpRequest.post(getNoticeImgUrl, data);
+  return httpRequest.get(getNoticeImgUrl, data);
 }

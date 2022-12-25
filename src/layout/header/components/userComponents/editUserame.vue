@@ -60,6 +60,7 @@ const confirm = () => {
           })
         }
         loading.value = false;
+        emits('closeDialog');
       }).catch(() => {})
     }
   });

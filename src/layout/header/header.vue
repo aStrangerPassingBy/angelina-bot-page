@@ -13,8 +13,9 @@ import user from './components/user.vue'
       <h1>
         angelina-bot
       </h1>
+      &nbsp;
       <h2>
-        -{{ $t('header.description') }}
+        --明日方舟主题群聊机器人
       </h2>
     </div>
     <ul class="header-right">
@@ -58,7 +59,7 @@ import user from './components/user.vue'
       margin-right: 10px;
     }
     h1 {
-      font-size: 30px;
+      font-size: 35px;
     }
   }
   .header-right {

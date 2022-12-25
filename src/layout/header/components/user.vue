@@ -78,7 +78,8 @@ const handleLogout = () => {
       :close-on-click-modal="false"
       :append-to-body="true"
       destroy-on-close
-      width="30%">
+      draggable
+      width="400px">
       <linkToBot @closeDialog="closeDialog"></linkToBot>
     </el-dialog>
     <!-- 修改账户名 -->
@@ -88,7 +89,8 @@ const handleLogout = () => {
       :close-on-click-modal="false"
       :append-to-body="true"
       destroy-on-close
-      width="30%">
+      draggable
+      width="400px">
       <editUsername @closeDialog="closeDialog"></editUsername>
     </el-dialog>
     <!-- 修改密码 -->
@@ -98,7 +100,8 @@ const handleLogout = () => {
       :close-on-click-modal="false"
       :append-to-body="true"
       destroy-on-close
-      width="30%">
+      draggable
+      width="400px">
       <editPassword @closeDialog="closeDialog"></editPassword>
     </el-dialog>
   </el-popover>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 import registerForm from './components/registerForm.vue'
 import PWForm from './components/PWForm.vue';
 import PINForm from './components/PINForm.vue';

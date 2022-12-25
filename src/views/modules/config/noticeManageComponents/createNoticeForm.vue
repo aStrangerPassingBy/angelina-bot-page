@@ -1,11 +1,17 @@
 <script setup lang='ts'>
 import { ref, reactive, computed } from 'vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import { Plus } from '@element-plus/icons-vue'
 import { createNoticeApi } from '@/api/modules/config/notice'
-
 import type { UploadProps, UploadUserFile } from 'element-plus'
 
+const emits = defineEmits<{
+  (e: 'cancelSet'): void,
+  (e: 'afterSet'): void
+}>()
+
 // const fileList = ref<UploadUserFile[]>([]);
+const loading = ref(false);
 const dialogVisible = ref(false);
 const dialogImageUrl = ref('');
 const formData = reactive<{
@@ -33,17 +39,40 @@ const handleChange: UploadProps['onChange'] = (file: any, fileList: any) => {
 }
 
 const confirm = () => {
-  console.log(formData);
-  const params = {
-    text: formData.text,
-    img: formData.img[0],
-  }
-  createNoticeApi(params).then(res => {
-    console.log('res', res);
-    
-  }).catch(err => {
-    console.log('upload', err);
+  ElMessageBox.confirm('确定要提交该公告么', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+  }).then(() => {
+    loading.value = true;
+    const params = {
+      // text: formData.text,
+      img: formData.img[0],
+    }
+    const config = {
+      'Content-Type': 'multipart/form-data',
+      params: {
+        text: formData.text,
+      }
+    }
+    createNoticeApi(params, config).then(res => {
+      ElMessage({
+        type: 'success',
+        message: res.data.text
+      });
+      loading.value = false;
+      emits('afterSet');
+    }).catch(err => {
+      console.log('upload', err);
+      ElMessage({
+        type: 'error',
+        message: '创建失败'
+      });
+      loading.value = false;
+    })
+  }).catch(() => {
+
   })
+  
 }
 </script>
 
@@ -72,7 +101,7 @@ const confirm = () => {
       </el-form-item>
     </el-form>
     <footer class="btn-box">
-      <el-button>取消</el-button>
+      <el-button @click="$emit('cancelSet')">取消</el-button>
       <el-button type="primary" @click="confirm">确认</el-button>
     </footer>
     <el-dialog v-model="dialogVisible">

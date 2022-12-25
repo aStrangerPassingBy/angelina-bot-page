@@ -28,6 +28,8 @@ onMounted(() => {
 <style scoped lang='scss'>
 .home-box {
   width: 100%;
+  display: flex;
+  background:  #ecf5ff;
   .notice-box {
     box-sizing: border-box;
     height: 300px;

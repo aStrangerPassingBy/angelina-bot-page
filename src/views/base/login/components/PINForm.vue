@@ -1,8 +1,9 @@
 <script setup lang='ts'>
 import { ref, reactive, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import type { FormRules } from 'element-plus'
+import { ElMessageBox, type FormRules } from 'element-plus'
 import tempAdminRoutes from '@/assets/json/common/tempAdminRoutes.json'
+import { creatCaptchaApi, captchaApi } from '@/api/common';
 
 const emits = defineEmits<{
   // 登录成功后会掉
@@ -12,18 +13,18 @@ const emits = defineEmits<{
 }>()
 
 type LoginForm = {
-  username: string,
+  qq: string,
 }
 const i18n = useI18n();
 
 const loginFormRef = ref();
 const formData = reactive<LoginForm>({
-  username: '',
+  qq: '',
 });
 
 const rules = computed(():FormRules => {
   return {
-    username: [
+    qq: [
       {
         required: true,
         message: i18n.t('login.checkBotQQ')
@@ -42,14 +43,25 @@ const reset = () => {
 const verify = () => {
   loginFormRef.value.validate((valid: boolean) => {
     if(valid) {
-      emits('updateLoading', true)
-      setTimeout(() => {
-        const returnObject = {
-          token: '',
-          routeList: tempAdminRoutes
-        }
-        emits('afterLogin', returnObject)
-      }, 1000);
+      emits('updateLoading', true);
+      const params = {
+        qq: formData.qq
+      }
+      creatCaptchaApi(params).then(res => {
+        ElMessageBox.confirm(`给qq发送${res.data}`, {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(() => {
+          captchaApi({qq: formData.qq}).then(res => {
+            console.log('验证是否通过', res);
+          }).catch((err) => {
+            console.log(err);
+          })
+        })
+      }).catch(err => {
+        console.log('err', err);
+        
+      })
     }
   })
 };
@@ -63,7 +75,7 @@ defineExpose({
   <main class="login-form">
     <el-form :rules="rules" :model="formData" ref="loginFormRef">
       <el-form-item prop="username">
-        <el-input v-model="formData.username" :placeholder="$t('login.botQQPlaceholder')" prefix-icon="User" size="large"></el-input>
+        <el-input v-model="formData.qq" :placeholder="$t('login.botQQPlaceholder')" prefix-icon="User" size="large"></el-input>
       </el-form-item>
     </el-form>
   </main>

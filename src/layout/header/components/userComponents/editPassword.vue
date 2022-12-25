@@ -77,6 +77,7 @@ const confirm = () => {
         confirmButtonText: i18n.t('header.confirm'),
         cancelButtonText: i18n.t('header.cancel'),
       }).then(() => {
+        loading.value = true;
         const publicKey = getSessionStorage('publicKey')
         const params = {
           oldPwd: getRsaPassword(publicKey, formData.oldPassword),
@@ -88,6 +89,7 @@ const confirm = () => {
             type: 'success',
             message: 'succeed'
           })
+          loading.value = false;
           emits('closeDialog');
         }).catch((err: any) => {
           console.log('更改失败', err);
@@ -95,6 +97,7 @@ const confirm = () => {
             type: 'error',
             message: 'failed'
           })
+          loading.value = false;
         })
       }).catch(() => {})
     }

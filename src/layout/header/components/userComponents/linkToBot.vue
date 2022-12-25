@@ -2,6 +2,7 @@
 import { ref, reactive, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { FormRules } from 'element-plus';
+import { addUserBotApi } from '@/api/common/user';
 
 const emits = defineEmits<{
   (e: 'closeDialog'): void
@@ -29,7 +30,12 @@ const rules = computed((): FormRules => {
   }
 });
 const confirm = () => {
-
+  const params = {
+    qq: formData.qq
+  }
+  addUserBotApi(params).then((res) => {
+    console.log(res);
+  })
 }
 </script>
 
