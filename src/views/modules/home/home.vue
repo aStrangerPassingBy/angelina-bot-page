@@ -1,27 +1,23 @@
 <script setup lang='ts'>
 import { onMounted } from 'vue';
-import { getBotBoardApi, getBotListApi, getFuncListApi, getSomeOneFuncListApi } from '@/api/modules/config/bot';
 import notice from './components/notice.vue';
+import onlineSituation from './components/onlineSituation.vue'
+import fnSituation from './components/fnSituation.vue'
 
 onMounted(() => {
-  getBotBoardApi().then((res: any) => {
-    console.log('getBotBoardApi', res);
-  })
-  getBotListApi().then((res: any) => {
-    console.log('getBotListApi', res);
-  })
-  getFuncListApi().then((res: any) => {
-    console.log('getFuncListApi', res);
-  })
-  getSomeOneFuncListApi().then((res: any) => {
-    console.log('getSomeOneFuncListApi', res);
-  })
+
 })
 </script>
 
 <template>
   <div class="home-box">
-    <notice class="notice-box"></notice>
+    <div class="home-box-left">
+      <notice class="notice-box"></notice>
+      <onlineSituation class="pie-box"></onlineSituation>
+    </div>
+    <div class="home-box-right">
+      <fnSituation class="bar-box"></fnSituation>
+    </div>
   </div>
 </template>
 
@@ -29,12 +25,20 @@ onMounted(() => {
 .home-box {
   width: 100%;
   display: flex;
-  background:  #ecf5ff;
+  // background:  #ecf5ff;
   .notice-box {
     box-sizing: border-box;
     height: 300px;
     width: 500px;
     background: #ccc;
+  }
+  .pie-box {
+    width: 500px;
+    height: 500px;
+  }
+  .bar-box {
+    width: 600px;
+    height: 800px;
   }
 }
 </style>

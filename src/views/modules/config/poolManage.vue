@@ -17,7 +17,7 @@ const handleCurrentChange = (val: number) => {
   state.pagination.currentPage = val;
   query()
 }
-const handleClick = () => {
+const handleDelete = () => {
   
 }
 const query = () => {
@@ -59,13 +59,19 @@ onMounted(() => {
         <el-table-column prop="version" align="center" label="version"/>
         <!-- <el-table-column fixed="right" label="操作" width="120">
           <template #default>
-            <el-button link type="primary" size="small" @click="handleClick">删除</el-button>
+            <el-button link type="primary" size="small" @click="handleDelete">删除</el-button>
           </template>
         </el-table-column> -->
       </el-table>
     </main>
     <footer class="box-footer">
-      <el-pagination background layout="prev, pager, next" @current-change="handleCurrentChange" :total="state.pagination.totalCount"/>
+      <el-pagination
+        v-model:current-page="state.pagination.currentPage"
+        v-model:page-size="state.pagination.pageSize"
+        background
+        layout="prev, pager, next, jumper"
+        :total="state.pagination.totalCount"
+        @current-change="handleCurrentChange"/>
     </footer>
     <el-dialog
       v-model="createPoolVisible"

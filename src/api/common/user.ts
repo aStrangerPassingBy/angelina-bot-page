@@ -29,9 +29,3 @@ const getUserInfoUrl = '/api' + '/user/getUserInfo';
 export function getUserInfoApi(data?: any) {
   return httpRequest.get(getUserInfoUrl, data);
 }
-
-// 查询用户余额
-const getUserPropertyUrl = '/api' + '/user/getUserProperty';
-export function getUserPropertyApi(data?: any) {
-  return httpRequest.get(getUserPropertyUrl, data);
-}

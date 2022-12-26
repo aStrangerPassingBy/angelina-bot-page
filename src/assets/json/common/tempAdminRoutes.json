@@ -12,6 +12,16 @@
   {
     "id": "2",
     "level": 1,
+    "path": "/console",
+    "name": "Console",
+    "titleCn": "控制台",
+    "titleEn": "Console",
+    "hasChildren": false,
+    "componentPath": "/console/console"
+  },
+  {
+    "id": "3",
+    "level": 1,
     "path": "/config",
     "name": "Config",
     "titleCn": "配置中心",
@@ -19,7 +29,7 @@
     "hasChildren": true,
     "children": [
       {
-        "id": "2-1",
+        "id": "3-1",
         "level": 2,
         "path": "/config/noticeManage",
         "name": "NoticeManage",
@@ -29,17 +39,7 @@
         "children": []
       },
       {
-        "id": "2-2",
-        "level": 2,
-        "path": "/config/dictManage",
-        "name": "DictManage",
-        "titleCn": "字典项管理",
-        "titleEn": "Dict Manage",
-        "componentPath": "/config/dictManage",
-        "children": []
-      },
-      {
-        "id": "2-3",
+        "id": "3-2",
         "level": 2,
         "path": "/config/poolManage",
         "name": "PoolManage",
@@ -49,7 +49,7 @@
         "children": []
       },
       {
-        "id": "2-4",
+        "id": "3-3",
         "level": 2,
         "path": "/config/nicknameManage",
         "name": "NicknameManage",
@@ -59,25 +59,15 @@
         "children": []
       },
       {
-        "id": "2-5",
+        "id": "3-4",
         "level": 2,
-        "path": "/config/botManage",
-        "name": "BotManage",
-        "titleCn": "机器人管理",
-        "titleEn": "Bot Manage",
-        "componentPath": "/config/botManage",
+        "path": "/config/dictManage",
+        "name": "DictManage",
+        "titleCn": "字典项管理",
+        "titleEn": "Dict Manage",
+        "componentPath": "/config/dictManage",
         "children": []
       }
     ]
-  },
-  {
-    "id": "3",
-    "level": 2,
-    "path": "/console",
-    "name": "Console",
-    "titleCn": "控制台",
-    "titleEn": "Console",
-    "hasChildren": false,
-    "componentPath": "/console/console"
   }
 ]

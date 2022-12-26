@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed, watch, onMounted } from 'vue';
 import useGlobalStore from '@/stores';
 import { getBrowserLang } from './utils/utils';
 import { getLocalStorage, setLocalStorage, getSessionStorage } from './utils/storage';
@@ -43,7 +43,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-config-provider :local="i18nLocale">
+  <el-config-provider :locale="i18nLocale">
     <router-view></router-view>
   </el-config-provider>
 </template>
