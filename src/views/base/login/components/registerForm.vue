@@ -8,15 +8,12 @@ import commonRoutes from '@/assets/json/common/tempCommonRoutes.json'
 import { registerApi, getRSAPublicKeyApi } from '@/api/common';
 import { getRsaPassword } from '@/utils/rsaEncrypt'
 import type { RouteListItem } from '@/router/interface';
+import type { EmitObject } from '../interface'
 
 type LoginForm = {
   username: string,
   password: string,
   confirmPassword: string
-}
-type EmitObject = {
-  token: string,
-  routeList: RouteListItem[]
 }
 
 const emits = defineEmits<{
@@ -100,12 +97,14 @@ const confirm = () => {
       if(returnRegister.data.userInfo.isAdmin) {
         emitObject = {
           token: returnRegister.data.token,
-          routeList: adminRoutes as unknown as RouteListItem[]
+          routeList: adminRoutes as unknown as RouteListItem[],
+          userInfo: returnRegister.data.userInfo
         };
       } else {
         emitObject = {
           token: returnRegister.data.token,
-          routeList: commonRoutes as unknown as RouteListItem[]
+          routeList: commonRoutes as unknown as RouteListItem[],
+          userInfo: returnRegister.data.userInfo
         };
       }
       loading.value = false;

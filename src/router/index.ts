@@ -18,7 +18,8 @@ router.beforeEach((to, from, next) => {
 	// * 在跳转路由之前，清除所有的请求
 	axiosCanceler.removeAllPending();
   console.log('切换路由了');
-  if(!getSessionStorage('token') && to.path != '/login' && to.path != '/404') {
+  const token = getSessionStorage('token');
+  if(!token && to.path != '/login' && to.path != '/404' && to.path != '/home') {
     next({
       path: '/login'
     })

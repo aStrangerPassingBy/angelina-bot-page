@@ -14,7 +14,7 @@ const register = () => {
   afterSwitch();
 };
 // 完成注册后，直接使用返回的token登录
-const afterRegister = (emitObject: any) => {
+const afterRegister = (emitObject: EmitObject) => {
   afterLogin(emitObject);
 }
 const cancelRegister = () => {

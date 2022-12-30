@@ -2,16 +2,6 @@
   {
     "id": "1",
     "level": 1,
-    "path": "/home",
-    "name": "Home",
-    "titleCn": "首页",
-    "titleEn": "Home",
-    "hasChildren": false,
-    "componentPath": "/home/home"
-  },
-  {
-    "id": "2",
-    "level": 1,
     "path": "/console",
     "name": "Console",
     "titleCn": "控制台",
@@ -20,7 +10,7 @@
     "componentPath": "/console/console"
   },
   {
-    "id": "3",
+    "id": "2",
     "level": 1,
     "path": "/config",
     "name": "Config",
@@ -29,7 +19,7 @@
     "hasChildren": true,
     "children": [
       {
-        "id": "3-1",
+        "id": "2-1",
         "level": 2,
         "path": "/config/noticeManage",
         "name": "NoticeManage",
@@ -39,7 +29,7 @@
         "children": []
       },
       {
-        "id": "3-2",
+        "id": "2-2",
         "level": 2,
         "path": "/config/poolManage",
         "name": "PoolManage",
@@ -49,7 +39,7 @@
         "children": []
       },
       {
-        "id": "3-3",
+        "id": "2-3",
         "level": 2,
         "path": "/config/nicknameManage",
         "name": "NicknameManage",
@@ -59,7 +49,7 @@
         "children": []
       },
       {
-        "id": "3-4",
+        "id": "2-4",
         "level": 2,
         "path": "/config/dictManage",
         "name": "DictManage",

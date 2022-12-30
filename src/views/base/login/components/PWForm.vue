@@ -7,24 +7,19 @@ import commonRoutes from '@/assets/json/common/tempCommonRoutes.json'
 import { getRSAPublicKeyApi, loginApi } from '@/api/common';
 import { getRsaPassword } from '@/utils/rsaEncrypt';
 import type { RouteListItem } from '@/router/interface';
+import type { EmitObject } from '../interface';
 import { getSessionStorage, setSessionStorage } from '@/utils/storage';
-
-type EmitObject = {
-  token: string,
-  routeList: RouteListItem[],
-  userInfo: any
-}
 
 const emits = defineEmits<{
   (e: 'afterLogin', emitObject: EmitObject): void,
   (e: 'updateLoading', status: boolean): void
-}>()
+}>();
 
 type LoginForm = {
   username: string,
   password: string,
   // savepassword: boolean
-}
+};
 
 const i18n = useI18n();
 
@@ -95,7 +90,7 @@ const confirm = () => {
         }
         emits('afterLogin', emitObject);
       } catch(err) {
-        console.log('登陆失败', err);
+        console.log('登录失败', err);
       }
       emits('updateLoading', false);
     }

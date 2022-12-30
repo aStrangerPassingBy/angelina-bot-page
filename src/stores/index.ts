@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { GlobalStore } from './interface';
+import type { GlobalStore, UserInfo } from './interface';
 
 const useGlobalStore = defineStore({
   id: 'globalStore',
@@ -7,7 +7,10 @@ const useGlobalStore = defineStore({
     token: '',
     language: '',
     publicKey: '',
-    userInfo: {}
+    userInfo: {
+      name: '',
+      isAdmin: 0,
+    }
   }),
   getters: {},
   actions: {
@@ -22,6 +25,9 @@ const useGlobalStore = defineStore({
     },
     updatePublicKey(key: string) {
       this.publicKey = key;
+    },
+    updateUserInfo(userInfo: UserInfo) {
+      this.userInfo = {...userInfo};
     }
   },
 })

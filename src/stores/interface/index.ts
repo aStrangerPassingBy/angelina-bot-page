@@ -6,5 +6,6 @@ export interface GlobalStore {
 }
 
 export interface UserInfo {
-  
+  name: string,
+  isAdmin: 0 | 1
 }
