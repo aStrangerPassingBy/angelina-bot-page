@@ -1,14 +1,13 @@
 <script setup lang='ts'>
 import { ref, reactive, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { ElMessage } from 'element-plus'
-import type { FormRules } from 'element-plus'
-import adminRoutes from '@/assets/json/common/tempAdminRoutes.json'
-import commonRoutes from '@/assets/json/common/tempCommonRoutes.json'
+import { ElMessage } from 'element-plus';
+import { useGlobalStore } from '@/stores';
 import { registerApi, getRSAPublicKeyApi } from '@/api/common';
-import { getRsaPassword } from '@/utils/rsaEncrypt'
-import type { RouteListItem } from '@/router/interface';
-import type { EmitObject } from '../interface'
+import { getRsaPassword } from '@/utils/rsaEncrypt';
+import type { FormRules } from 'element-plus';
+import adminRoutes from '@/assets/json/common/tempAdminRoutes.json';
+import commonRoutes from '@/assets/json/common/tempCommonRoutes.json';
 
 type LoginForm = {
   username: string,
@@ -17,11 +16,12 @@ type LoginForm = {
 }
 
 const emits = defineEmits<{
-  (e: 'afterRegister', EmitObject: EmitObject): void,
   (e: 'cancelRegister'): void,
+  (e: 'afterLogin'): void,
 }>()
 
 const i18n = useI18n();
+const globalStore = useGlobalStore();
 
 const registerFormRef = ref();
 const loading = ref<boolean>(false);
@@ -73,7 +73,7 @@ const confirmPasswordEnter = (rule: any, value: any, callback: any) => {
 const confirm = () => {
   registerFormRef.value.validate(async (valid: boolean) => {
     if(valid) {
-      let params, returnRegister, publicKey, emitObject: EmitObject;
+      let params, returnRegister, publicKey;
       loading.value = true;
       try {
         const returnPublicKey = await getRSAPublicKeyApi();
@@ -87,6 +87,23 @@ const confirm = () => {
           type: 'success',
           message: '注册成功'
         })
+        if(returnRegister.data?.userInfo.isAdmin) {
+          const userInfo = {
+            ...returnRegister.data.userInfo,
+            routeList: adminRoutes
+          };
+          globalStore.updateLogin(true);
+          globalStore.updateUserInfo(userInfo);
+          globalStore.setToken(returnRegister.data.token);
+        } else {
+          const userInfo = {
+            ...returnRegister.data.userInfo,
+            routeList: commonRoutes
+          };
+          globalStore.updateLogin(true);
+          globalStore.updateUserInfo(userInfo);
+          globalStore.setToken(returnRegister.data.token);
+        }
       } catch(err) {
         ElMessage({
           type: 'error',
@@ -94,21 +111,9 @@ const confirm = () => {
         })
         console.log('err', err);
       }
-      if(returnRegister.data.userInfo.isAdmin) {
-        emitObject = {
-          token: returnRegister.data.token,
-          routeList: adminRoutes as unknown as RouteListItem[],
-          userInfo: returnRegister.data.userInfo
-        };
-      } else {
-        emitObject = {
-          token: returnRegister.data.token,
-          routeList: commonRoutes as unknown as RouteListItem[],
-          userInfo: returnRegister.data.userInfo
-        };
-      }
       loading.value = false;
-      emits('afterRegister', emitObject);
+      emits('cancelRegister');
+      emits('afterLogin');
     }
   });
 }

@@ -1,16 +1,19 @@
 <script setup lang='ts'>
 import { ref, reactive, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useGlobalStore } from '@/stores';
 import { ElMessageBox, ElMessage } from 'element-plus';
-import type { FormRules } from 'element-plus';
+
 import { editUserNameApi, getUserInfoApi } from '@/api/common/user'
 import { setSessionStorage } from '@/utils/storage';
+import type { FormRules } from 'element-plus';
 
 const emits = defineEmits<{
   (e: 'closeDialog'): void
 }>()
 
 const i18n = useI18n();
+const globalStore = useGlobalStore();
 
 const loading = ref(false);
 const formDataRef = ref();
@@ -49,9 +52,12 @@ const confirm = () => {
             type: 'success',
             message: 'succeed'
           })
-          const res: any = await getUserInfoApi();
-          console.log('res', res);
-          setSessionStorage('userInfo', res.data);
+          // const res: any = await getUserInfoApi();
+          const userInfo = {
+            ...globalStore.userInfo,
+          }
+          userInfo.name = formData.username;
+          globalStore.updateUserInfo(userInfo);
         } catch(err) {
           console.log('更改失败', err);
           ElMessage({

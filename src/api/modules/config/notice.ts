@@ -26,6 +26,6 @@ export function getNoticeApi(data?: any) {
 
 // 获取公告图片
 const getNoticeImgUrl = '/api' + '/notice/getNoticeImg';
-export function getNoticeImgApi(data: any) {
-  return httpRequest.get(getNoticeImgUrl, data);
+export function getNoticeImgApi(data: any, config?: any) {
+  return httpRequest.get(getNoticeImgUrl, data, config);
 }

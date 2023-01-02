@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import useGlobalStore from '@/stores';
+import { useGlobalStore } from '@/stores';
 import type { RouteListItem } from '@/router/interface';
 
 const router = useRouter();

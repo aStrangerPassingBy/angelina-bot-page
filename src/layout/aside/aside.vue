@@ -1,13 +1,11 @@
 <script setup lang='ts'>
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
-import useGlobalStore from '@/stores';
-import { getSessionStorage } from '@/utils/storage';
+import { useGlobalStore } from '@/stores';
 import type { RouteListItem } from '@/router/interface';
 
 const router = useRouter();
 const globalStore = useGlobalStore();
-const routeList: RouteListItem[] = getSessionStorage('routeList');
 
 const title = computed(() => {
   return function(titleCn: string, titleEn: string) {
@@ -24,6 +22,14 @@ const title = computed(() => {
 // 当前路由的一级路由
 const currentRoute = computed(() => {
   return router.currentRoute.value.matched[0].path;
+})
+
+const routeList = computed(() => {
+  if(globalStore.isLogin) {
+    return [...globalStore.baseRouteList, ...globalStore.routeList];
+  } else {
+    return globalStore.baseRouteList;
+  }
 })
 </script>
 

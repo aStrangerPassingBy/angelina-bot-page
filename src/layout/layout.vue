@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
-import useGlobalStore from '@/stores';
+import { useGlobalStore } from '@/stores';
 import Header from './header/header.vue';
 import ASide from './aside/aside.vue';
 import Main from './main/main.vue';

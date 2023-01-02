@@ -1,6 +1,7 @@
 export interface RouteListItem {
   id: string | number,
   level: number,
+  type: string,
   path: string,
   name: string,
   titleCn: string,

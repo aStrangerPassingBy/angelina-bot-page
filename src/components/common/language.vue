@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n';
-import useGlobalStore from '@/stores';
+import { useGlobalStore } from '@/stores';
 import { setLocalStorage, getLocalStorage } from '@/utils/storage'
 
 const emits = defineEmits<{
@@ -42,7 +42,7 @@ onMounted(() => {
     </template>
     <ul class="language-list">
       <li class="language-list-item" @click="switchLanguage('zh')">中文</li>
-      <li class="language-list-item" @click="switchLanguage('en')">English</li>
+      <!-- <li class="language-list-item" @click="switchLanguage('en')">English</li> -->
     </ul>
   </el-popover>
 </template>

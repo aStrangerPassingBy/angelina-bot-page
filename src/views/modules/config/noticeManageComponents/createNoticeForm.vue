@@ -46,14 +46,18 @@ const confirm = () => {
     loading.value = true;
     const params = {
       // text: formData.text,
-      img: formData.img[0],
+      img: formData.img[0].raw,
     }
     const config = {
-      'Content-Type': 'multipart/form-data',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
       params: {
         text: formData.text,
       }
     }
+    console.log(config, 'config');
+    
     createNoticeApi(params, config).then(res => {
       ElMessage({
         type: 'success',
@@ -72,7 +76,6 @@ const confirm = () => {
   }).catch(() => {
 
   })
-  
 }
 </script>
 
@@ -105,7 +108,7 @@ const confirm = () => {
       <el-button type="primary" @click="confirm">确认</el-button>
     </footer>
     <el-dialog v-model="dialogVisible">
-      <img w-full :src="dialogImageUrl" alt="Preview Image" />
+      <img w-full :src="dialogImageUrl" alt="Preview Image"/>
     </el-dialog>
   </div>
 </template>

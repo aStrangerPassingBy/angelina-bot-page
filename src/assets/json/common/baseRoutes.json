@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1",
+    "level": 1,
+    "type": "base",
+    "path": "/home",
+    "name": "Home",
+    "titleCn": "首页",
+    "titleEn": "Home",
+    "hasChildren": false,
+    "componentPath": "/home/home",
+    "children": []
+  }
+]

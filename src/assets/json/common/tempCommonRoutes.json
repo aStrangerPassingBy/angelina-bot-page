@@ -1,7 +1,8 @@
 [
   {
-    "id": "1",
-    "level": 2,
+    "id": "2",
+    "level": 1,
+    "type": "common",
     "path": "/console",
     "name": "Console",
     "titleCn": "控制台",

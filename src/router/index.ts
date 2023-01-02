@@ -1,7 +1,8 @@
 import router from './router'
 import NProgress from "nprogress";
+import { useGlobalStore } from '@/stores';
 import { AxiosCanceler } from "@/api/axiosCancel";
-import { getSessionStorage } from '@/utils/storage';
+import { visitPageApi } from '@/api/common'
 
 NProgress.configure({
 	easing: "ease", // 动画方式
@@ -15,20 +16,28 @@ const axiosCanceler = new AxiosCanceler();
 
 router.beforeEach((to, from, next) => {
   NProgress.start();
-	// * 在跳转路由之前，清除所有的请求
-	axiosCanceler.removeAllPending();
-  console.log('切换路由了');
-  const token = getSessionStorage('token');
-  if(!token && to.path != '/login' && to.path != '/404' && to.path != '/home') {
-    next({
-      path: '/login'
-    })
-  } else {
-    next();
+  const globalStore = useGlobalStore();
+  const params = {
+    url: to.path
   }
+  visitPageApi(params).then(res => {
+    // console.log('埋点', res);
+    // * 在跳转路由之前，清除所有的请求(需要更改)
+    axiosCanceler.removeAllPending();
+    if(!globalStore.token && to.path != '/login' && to.path != '/404' && to.path != '/home') {
+      next({
+        path: '/login'
+      })
+    } else {
+      next();
+    }
+  })
 })
 
-router.afterEach(() => {
+router.afterEach((to, from) => {
+  if(from.path == '/404') {
+    location.reload();
+  }
   NProgress.done()
 })
 

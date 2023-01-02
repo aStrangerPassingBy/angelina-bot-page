@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 const link = () => {
-  window.open('https://github.com')
+  window.open('https://github.com/Strelizia02')
 }
 </script>
 

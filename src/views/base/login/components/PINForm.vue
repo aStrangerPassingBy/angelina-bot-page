@@ -2,7 +2,6 @@
 import { ref, reactive, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ElMessageBox, type FormRules } from 'element-plus'
-import tempAdminRoutes from '@/assets/json/common/tempAdminRoutes.json'
 import { creatCaptchaApi, captchaApi } from '@/api/common';
 
 const emits = defineEmits<{
@@ -49,7 +48,7 @@ const verify = () => {
       }
       creatCaptchaApi(params).then(res => {
         ElMessageBox.confirm(`给qq发送${res.data}`, {
-          confirmButtonText: '确定',
+          confirmButtonText: '我已发送',
           cancelButtonText: '取消',
         }).then(() => {
           captchaApi({qq: formData.qq}).then(res => {
@@ -81,7 +80,7 @@ defineExpose({
   </main>
   <footer class="login-footer">
     <el-button icon='CircleClose' round size="large" @click="reset">{{ $t('login.reset') }}</el-button>
-    <el-button icon='CircleCheck' round size="large" @click="verify">{{ $t('login.verify') }}</el-button>
+    <el-button icon='CircleCheck' round size="large" >{{ $t('login.verify') }}</el-button>
   </footer>
 </template>
 

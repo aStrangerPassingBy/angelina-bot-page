@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import registerForm from './components/registerForm.vue'
+import { ref, nextTick } from 'vue';
+import { useRoutes } from '@/hooks/useRoutes'
 import PWForm from './components/PWForm.vue';
 import PINForm from './components/PINForm.vue';
-import type { EmitObject } from './interface';
-import { setSessionStorage } from '@/utils/storage';
-import { useRoutes } from '@/hooks/useRoutes'
+import registerForm from './components/registerForm.vue'
+import router from '@/router';
 
 /* 注册账号 */
 const registerVisible = ref(false);
@@ -14,12 +13,12 @@ const register = () => {
   afterSwitch();
 };
 // 完成注册后，直接使用返回的token登录
-const afterRegister = (emitObject: EmitObject) => {
-  afterLogin(emitObject);
-}
+const afterRegister = () => {
+  afterLogin();
+};
 const cancelRegister = () => {
   registerVisible.value = false;
-}
+};
 
 /* 语言切换 */
 const afterSwitch = () => {
@@ -28,31 +27,29 @@ const afterSwitch = () => {
   } catch (error) {
     PINFormRef.value.reset();
   }
-}
+};
 
 /* loading */
 const loading = ref<boolean>(false);
 const updateLoading = (state: boolean) => {
   loading.value = state;
-}
+};
 
 /* 登录 */
 const PWFormRef = ref();
 const PINFormRef = ref();
-const loginType = ref<'PW' | 'PIN'>('PW')
+const loginType = ref<'PW' | 'PIN'>('PW');
 const switchLoginType = (type: 'PW' | 'PIN') => {
   loginType.value = type;
-}
-const routes = useRoutes();
+};
 // 登录成功后回调
-const afterLogin = (emitObject: EmitObject) => {
-  // 将登录后获取的token、路由表、用户信息存储在sessionStorage中
-  const { routeList, token, userInfo } = emitObject;
-  setSessionStorage('routeList', routeList);
-  setSessionStorage('token', token);
-  setSessionStorage('userInfo', userInfo);
+const afterLogin = () => {
+  const routes = useRoutes();
   routes.updateRoutes();
-}
+  nextTick().then(() => {
+    router.replace({path: '/home'});
+  });
+};
 </script>
 
 <template>
@@ -83,7 +80,7 @@ const afterLogin = (emitObject: EmitObject) => {
     :close-on-click-modal="false"
     :append-to-body="true"
     width="30%">
-    <registerForm @cancelRegister="cancelRegister" @afterRegister="afterRegister"></registerForm>
+    <registerForm @cancelRegister="cancelRegister" @afterLogin="afterLogin"></registerForm>
   </el-dialog>
 </template>
 

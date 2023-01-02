@@ -1,15 +1,18 @@
 <script setup lang='ts'>
-import { reactive, onMounted } from 'vue';
+import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { ElMessageBox } from 'element-plus'
-import { getSessionStorage, removeSessionStorage, clearSessionStorage } from '@/utils/storage';
+import { useGlobalStore } from '@/stores';
+import { useRoutes } from '@/hooks/useRoutes';
+import { ElMessageBox } from 'element-plus';
 import linkToBot from './userComponents/linkToBot.vue'
 import editUsername from './userComponents/editUserame.vue'
 import editPassword from './userComponents/editPassword.vue'
 
 const router = useRouter();
 const i18n = useI18n();
+const routes = useRoutes();
+const globalStore = useGlobalStore();
 
 const visible = reactive({
   linkToBot: false,
@@ -29,12 +32,13 @@ const handleLogout = () => {
     confirmButtonText: `${i18n.t('header.confirm')}`,
     cancelButtonText: `${i18n.t('header.cancel')}`,
   }).then(() => {
-    // clearSessionStorage();
-    removeSessionStorage('token');
-    removeSessionStorage('routes');
-    router.push({
-      path: '/login'
-    })
+    globalStore.initGlobalStore();
+    routes.removeRoutes();
+    setTimeout(() => {
+      router.push({
+        path: '/home'
+      })
+    }, 100);
   }).catch(() => {})
 }
 </script>
@@ -48,29 +52,37 @@ const handleLogout = () => {
       <!-- <el-avatar :size="35" src-set="@/assets/images/base/default-avatar.png"/> -->
       <img class="user-avatar" src="@/assets/images/base/default-avatar.png" alt="">
     </template>
-    <div class="userInfo-box">
-      <img class="user-avatar" src="@/assets/images/base/default-avatar.png" alt="">
-      <div>{{ getSessionStorage('userInfo').name }}</div>
-    </div>
-    <ul class="user-menu">
-      <li class="user-menu-item" @click="visible.linkToBot = true">
-        <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
-        {{ $t('header.linkToBot') }}
-      </li>
-      
-      <li class="user-menu-item" @click="visible.editUsername = true">
-        <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
-        {{ $t('header.editUsername') }}
-      </li>
-      <li class="user-menu-item" @click="visible.editPassword = true">
-        <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
-        {{ $t('header.editPassword') }}
-      </li>
-      <li class="user-menu-item" @click="handleLogout">
-        <!-- <img src="@/assets/images/base/user-logout.svg" alt=""> -->
-        {{ $t('header.logout') }}
-      </li>
-    </ul>
+    <template v-if="globalStore.isLogin">
+      <div class="userInfo-box">
+        <img class="user-avatar" src="@/assets/images/base/default-avatar.png" alt="">
+        <div>{{ globalStore.userInfo.name }}</div>
+      </div>
+      <ul class="user-menu">
+        <li class="user-menu-item" @click="visible.linkToBot = true">
+          <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
+          {{ $t('header.linkToBot') }}
+        </li>
+        
+        <li class="user-menu-item" @click="visible.editUsername = true">
+          <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
+          {{ $t('header.editUsername') }}
+        </li>
+        <li class="user-menu-item" @click="visible.editPassword = true">
+          <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
+          {{ $t('header.editPassword') }}
+        </li>
+        <li class="user-menu-item" @click="handleLogout">
+          <!-- <img src="@/assets/images/base/user-logout.svg" alt=""> -->
+          {{ $t('header.logout') }}
+        </li>
+      </ul>
+    </template>
+    <template v-else>
+      <div class="tourist-box">
+        <span>未登录</span>
+        <el-button size="small" @click="router.replace({path: '/login'})">登录</el-button>
+      </div>
+    </template>
     <!-- 绑定bot -->
     <el-dialog
       v-model="visible.linkToBot"
@@ -136,5 +148,10 @@ const handleLogout = () => {
   .user-menu-item:hover {
     background: #c6e2ff;
   }
+}
+.tourist-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }
 </style>

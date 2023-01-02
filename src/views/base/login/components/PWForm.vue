@@ -1,17 +1,16 @@
 <script setup lang='ts'>
 import { ref, reactive, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import type { FormRules } from 'element-plus';
-import adminRoutes from '@/assets/json/common/tempAdminRoutes.json'
-import commonRoutes from '@/assets/json/common/tempCommonRoutes.json'
+import { useGlobalStore } from '@/stores';
 import { getRSAPublicKeyApi, loginApi } from '@/api/common';
 import { getRsaPassword } from '@/utils/rsaEncrypt';
-import type { RouteListItem } from '@/router/interface';
-import type { EmitObject } from '../interface';
-import { getSessionStorage, setSessionStorage } from '@/utils/storage';
+import { getSessionStorage } from '@/utils/storage';
+import { ElMessage, type FormRules } from 'element-plus';
+import adminRoutes from '@/assets/json/common/tempAdminRoutes.json';
+import commonRoutes from '@/assets/json/common/tempCommonRoutes.json';
 
 const emits = defineEmits<{
-  (e: 'afterLogin', emitObject: EmitObject): void,
+  (e: 'afterLogin'): void,
   (e: 'updateLoading', status: boolean): void
 }>();
 
@@ -22,6 +21,7 @@ type LoginForm = {
 };
 
 const i18n = useI18n();
+const globalStore = useGlobalStore();
 
 const loginFormRef = ref();
 const formData = reactive<LoginForm>({
@@ -61,36 +61,42 @@ const reset = () => {
 const confirm = () => {
   loginFormRef.value.validate(async (valid: boolean) => {
     if(valid) {
-      let params, returnLogin, publicKey, emitObject: EmitObject;
+      let params, returnLogin, publicKey;
       emits('updateLoading', true);
       try {
         publicKey = getSessionStorage('publicKey');
+        // 本地没有存储RSA密钥则调用接口获取
         if(!publicKey) {
           const res = await getRSAPublicKeyApi();
           publicKey = res.data;
-          setSessionStorage('publicKey', publicKey);
+          globalStore.updatePublicKey(publicKey);
         }
         params = {
           name: formData.username,
           pwd: getRsaPassword(publicKey, formData.password),
         };
         returnLogin = await loginApi(params);
-          if(returnLogin.data?.userInfo.isAdmin) {
-          emitObject = {
-            token: returnLogin.data.token,
-            routeList: adminRoutes as unknown as RouteListItem[],
-            userInfo: returnLogin.data.userInfo
-          };
+        // 判断是否是管理员账户，设置不同的路由表，然后将用户信息、token存到pinia中
+        if(returnLogin.data?.userInfo.isAdmin) {
+          const userInfo = returnLogin.data.userInfo;
+          globalStore.updateLogin(true);
+          globalStore.updateUserInfo(userInfo);
+          globalStore.updateRouteList(adminRoutes as any);
+          globalStore.setToken(returnLogin.data.token);
         } else {
-          emitObject = {
-            token: returnLogin.data.token,
-            routeList: commonRoutes as unknown as RouteListItem[],
-            userInfo: returnLogin.data.userInfo
-          };
+          const userInfo = returnLogin.data.userInfo;
+          globalStore.updateLogin(true);
+          globalStore.updateUserInfo(userInfo);
+          globalStore.updateRouteList(commonRoutes as any);
+          globalStore.setToken(returnLogin.data.token);
         }
-        emits('afterLogin', emitObject);
+        emits('afterLogin');
       } catch(err) {
         console.log('登录失败', err);
+        ElMessage({
+          type:'error',
+          message: '登陆失败'
+        })
       }
       emits('updateLoading', false);
     }

@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { computed, watch, onMounted } from 'vue';
-import useGlobalStore from '@/stores';
+import { computed, onMounted } from 'vue';
+import { useGlobalStore } from '@/stores';
+import { useRouter } from 'vue-router';
 import { getBrowserLang } from './utils/utils';
-import { getLocalStorage, setLocalStorage, getSessionStorage } from './utils/storage';
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
-import en from 'element-plus/dist/locale/en.mjs'
-import { useRoutes } from '@/hooks/useRoutes'
+import { useRoutes } from './hooks/useRoutes';
+import { getLocalStorage, setLocalStorage } from './utils/storage';
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
+import en from 'element-plus/dist/locale/en.mjs';
 
+const router = useRouter();
 const routes = useRoutes();
 const globalStore = useGlobalStore();
 
@@ -32,13 +34,8 @@ onMounted(() => {
     setLocalStorage('language', lang);
     globalStore.updateLanguage(lang);
   }
-  // 获取本地存储的路由表，如果有路由表则添加到router中
-  // 防止刷新页面后路由表消失
-  const routeList = getSessionStorage('routeList');
-  
-  if(routeList?.length) {
-    routes.updateRoutes();
-  }
+  routes.updateRoutes();
+  router.replace({path: '/home'})
 })
 </script>
 

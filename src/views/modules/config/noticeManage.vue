@@ -1,7 +1,7 @@
 <script setup lang='ts'>
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { createNoticeApi, deleteNoticeApi, editNoticeApi, getNoticeApi, getNoticeImgApi } from '@/api/modules/config/notice'
+import { deleteNoticeApi, getNoticeApi, getNoticeImgApi } from '@/api/modules/config/notice'
 import createNoticeForm from './noticeManageComponents/createNoticeForm.vue'
 
 type NoticeItem = {
@@ -122,7 +122,7 @@ onMounted(() => {
             <el-divider direction="vertical" border-style="dashed" />
             <el-button icon='EditPen' type="primary" link @click="editNotice(item)">修改</el-button>
             <el-divider direction="vertical" border-style="dashed" />
-            <el-button icon='Delete' type="primary" link @click="deleteNotice(item.id!)">删除</el-button>
+            <el-button icon='Delete' type="primary" link @click="deleteNotice(item.id)">删除</el-button>
           </div>
         </footer>
       </li>

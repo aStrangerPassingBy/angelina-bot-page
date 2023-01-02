@@ -30,6 +30,12 @@ export function captchaApi(data: any) {
   return httpRequest.get(captchaUrl, data);
 }
 
+// 切换路由埋点
+const visitPageUrl = '/api' + '/data/visitPage';
+export function visitPageApi(data: any) {
+  return httpRequest.get(visitPageUrl, data);
+}
+
 // 文件下载
 const downloadUrl = '/api' + '/file/download';
 export function downloadApi(data: any, config: any) {
