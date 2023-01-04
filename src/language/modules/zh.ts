@@ -17,7 +17,7 @@ export default {
     botQQPlaceholder: '请输入bot的qq',
     checkUserName: '请输入账户名！！！',
     checkPassword: '请输入密码！！！',
-    checkBotQQ: '请输入bot的qq！！！',
+    checkBotQQ: '请输入bot绑定的qq！！！',
     savePassword: '保存密码',
   },
   header: {

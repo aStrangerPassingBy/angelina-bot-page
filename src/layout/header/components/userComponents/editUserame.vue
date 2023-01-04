@@ -4,8 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { useGlobalStore } from '@/stores';
 import { ElMessageBox, ElMessage } from 'element-plus';
 
-import { editUserNameApi, getUserInfoApi } from '@/api/common/user'
-import { setSessionStorage } from '@/utils/storage';
+import { editUserNameApi } from '@/api/common/user'
 import type { FormRules } from 'element-plus';
 
 const emits = defineEmits<{

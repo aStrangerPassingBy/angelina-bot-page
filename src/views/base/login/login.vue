@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { ref, nextTick } from 'vue';
+import { ref, nextTick, onMounted } from 'vue';
+import { useGlobalStore } from '@/stores';
 import { useRoutes } from '@/hooks/useRoutes'
 import PWForm from './components/PWForm.vue';
 import PINForm from './components/PINForm.vue';
 import registerForm from './components/registerForm.vue'
 import router from '@/router';
+import { getRSAPublicKeyApi } from '@/api/common';
+import { ElMessage } from 'element-plus';
 
 /* 注册账号 */
 const registerVisible = ref(false);
@@ -50,6 +53,29 @@ const afterLogin = () => {
     router.replace({path: '/home'});
   });
 };
+
+const globalStore = useGlobalStore();
+
+const initState = () => {
+  if(!globalStore.publicKey) {
+    loading.value = true;
+    getRSAPublicKeyApi().then(res => {
+      globalStore.updatePublicKey(res.data);
+      console.log(globalStore.publicKey);
+      
+    }).catch(() => {
+      ElMessage({
+        type: 'error',
+        message: '获取密钥失败'
+      })
+    }).finally(() => {
+      loading.value = false;
+    })
+  }
+}
+onMounted(() => {
+  initState();
+})
 </script>
 
 <template>

@@ -1,17 +1,18 @@
 <script setup lang='ts'>
 import { ref, reactive, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useGlobalStore } from '@/stores'
 import { ElMessageBox, ElMessage } from 'element-plus';
 import type { FormRules } from 'element-plus';
 import { editUserPWDApi } from '@/api/common/user'
 import { getRsaPassword } from '@/utils/rsaEncrypt';
-import { getSessionStorage } from '@/utils/storage';
 
 const emits = defineEmits<{
   (e: 'closeDialog'): void
 }>()
 
-const i18n = useI18n()
+const i18n = useI18n();
+const globalStore = useGlobalStore();
 
 const loading = ref(false);
 const formDataRef = ref();
@@ -78,7 +79,7 @@ const confirm = () => {
         cancelButtonText: i18n.t('header.cancel'),
       }).then(() => {
         loading.value = true;
-        const publicKey = getSessionStorage('publicKey')
+        const publicKey = globalStore.publicKey;
         const params = {
           oldPwd: getRsaPassword(publicKey, formData.oldPassword),
           newPwd: getRsaPassword(publicKey, formData.newPassword),

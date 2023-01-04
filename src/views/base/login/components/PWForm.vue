@@ -4,8 +4,8 @@ import { useI18n } from 'vue-i18n';
 import { useGlobalStore } from '@/stores';
 import { getRSAPublicKeyApi, loginApi } from '@/api/common';
 import { getRsaPassword } from '@/utils/rsaEncrypt';
-import { getSessionStorage } from '@/utils/storage';
-import { ElMessage, type FormRules } from 'element-plus';
+import { ElMessage } from 'element-plus';
+import type { FormRules } from 'element-plus';
 import adminRoutes from '@/assets/json/common/tempAdminRoutes.json';
 import commonRoutes from '@/assets/json/common/tempCommonRoutes.json';
 
@@ -51,7 +51,7 @@ const rules = computed((): FormRules => {
       }
     ]
   }
-})
+});
 
 // 重置表单
 const reset = () => {
@@ -61,19 +61,12 @@ const reset = () => {
 const confirm = () => {
   loginFormRef.value.validate(async (valid: boolean) => {
     if(valid) {
-      let params, returnLogin, publicKey;
+      let params, returnLogin;
       emits('updateLoading', true);
       try {
-        publicKey = getSessionStorage('publicKey');
-        // 本地没有存储RSA密钥则调用接口获取
-        if(!publicKey) {
-          const res = await getRSAPublicKeyApi();
-          publicKey = res.data;
-          globalStore.updatePublicKey(publicKey);
-        }
         params = {
           name: formData.username,
-          pwd: getRsaPassword(publicKey, formData.password),
+          pwd: getRsaPassword(globalStore.publicKey, formData.password),
         };
         returnLogin = await loginApi(params);
         // 判断是否是管理员账户，设置不同的路由表，然后将用户信息、token存到pinia中

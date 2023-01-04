@@ -7,7 +7,7 @@ export const useRoutes = () => {
 
 	const globalStore = useGlobalStore();
 
-  // 根据sessionStorage中的路由添加路由表
+  // 根据pinia中的路由添加路由表
   const updateRoutes = () => {
     const routeList = [
       ...globalStore.baseRouteList,
