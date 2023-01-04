@@ -43,11 +43,14 @@ const confirm = () => {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
   }).then(() => {
+    
+    
     loading.value = true;
     const params = {
       // text: formData.text,
-      img: formData.img[0].raw,
+      img: formData.img[0] ? formData.img[0].raw : null,
     }
+    console.log('zzxczxc');
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',

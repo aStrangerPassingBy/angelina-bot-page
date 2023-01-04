@@ -14,8 +14,8 @@ export function deleteNoticeApi(data: any) {
 
 // 修改公告
 const editNoticeUrl = '/api' + '/notice/editNotice';
-export function editNoticeApi(data: any) {
-  return httpRequest.post(editNoticeUrl, data);
+export function editNoticeApi(data: any, config: any) {
+  return httpRequest.post(editNoticeUrl, data, config);
 }
 
 // 获取公告

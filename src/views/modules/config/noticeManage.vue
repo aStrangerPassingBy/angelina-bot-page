@@ -3,6 +3,7 @@ import { ref, reactive, onMounted } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { deleteNoticeApi, getNoticeApi, getNoticeImgApi } from '@/api/modules/config/notice'
 import createNoticeForm from './noticeManageComponents/createNoticeForm.vue'
+import noticeDetail from './noticeManageComponents/noticeDetail.vue';
 
 type NoticeItem = {
   id: string,
@@ -10,13 +11,13 @@ type NoticeItem = {
   img: string
 }
 type DetailNoticeItem = {
-  type: string,
+  type: 'detail' | 'edit',
   data: NoticeItem
 }
 
 const loading = ref<boolean>(false);
 const createVisible = ref(false);
-const edit_detailVisible = ref(false);
+const detailVisible = ref(false);
 const noticeList = reactive<NoticeItem[]>([]);
 const detailNoticeItem = reactive<DetailNoticeItem>({
   type: 'detail',
@@ -34,19 +35,20 @@ const createNotice = () => {
 
 const cancelSet = () => {
   createVisible.value = false;
+  detailVisible.value = false;
 }
 
 // 查看详情
 const detailNotice = (noticeItem: NoticeItem) => {
   detailNoticeItem.type = 'detail';
   detailNoticeItem.data = noticeItem;
-  edit_detailVisible.value = true;
+  detailVisible.value = true;
 }
 // 修改公告
 const editNotice = (noticeItem: NoticeItem) => {
   detailNoticeItem.type = 'edit';
   detailNoticeItem.data = noticeItem;
-  edit_detailVisible.value = true;
+  detailVisible.value = true;
 }
 // 删除公告
 const deleteNotice = (noticeId: string) => {
@@ -69,12 +71,6 @@ const deleteNotice = (noticeId: string) => {
     })
   }).catch(() => {
 
-  })
-}
-
-const noticeImg = () => {
-  noticeList.forEach(item => {
-    getNoticeImgApi({id: item.id})
   })
 }
 
@@ -132,17 +128,23 @@ onMounted(() => {
       title="新增"
       :close-on-click-modal="false"
       :append-to-body="true"
-      :destroy-on-close="true"
+      destroy-on-close
       width="400px">
       <createNoticeForm @cancelSet="cancelSet" @afterSet="afterSet"></createNoticeForm>
     </el-dialog>
     <el-dialog
-      v-model="edit_detailVisible"
+      v-model="detailVisible"
       :title="$t(`config.${detailNoticeItem.type}`)"
       :close-on-click-modal="false"
       :append-to-body="true"
+      destroy-on-close
       width="30%">
-      <!-- <noticeDetail :detailNoticeItem="detailNoticeItem"></noticeDetail> -->
+      <noticeDetail 
+        :type="detailNoticeItem.type" 
+        :noticeItem="detailNoticeItem.data"
+        @cancelSet="cancelSet"
+        @afterSet="afterSet">
+      </noticeDetail>
     </el-dialog>
   </div>
 </template>
