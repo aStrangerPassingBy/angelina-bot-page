@@ -46,9 +46,13 @@ const detailNotice = (noticeItem: NoticeItem) => {
 }
 // 修改公告
 const editNotice = (noticeItem: NoticeItem) => {
-  detailNoticeItem.type = 'edit';
-  detailNoticeItem.data = noticeItem;
-  detailVisible.value = true;
+  ElMessage({
+    type: 'info',
+    message: '直接删了重写吧'
+  })
+  // detailNoticeItem.type = 'edit';
+  // detailNoticeItem.data = noticeItem;
+  // detailVisible.value = true;
 }
 // 删除公告
 const deleteNotice = (noticeId: string) => {

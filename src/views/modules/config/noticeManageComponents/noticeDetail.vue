@@ -47,8 +47,12 @@ const handleChange: UploadProps['onChange'] = (file: any, fileList: any) => {
 }
 
 const changeType = () => {
-  formData.img.pop();
-  type.value = 'edit';
+  // formData.img.pop();
+  // type.value = 'edit';
+  ElMessage({
+    type: 'info',
+    message: '直接删了重写吧'
+  })
 }
 
 const confirm = () => {
@@ -150,8 +154,8 @@ onMounted(() => {
     </el-form>
     <footer class="btn-box">
       <el-button @click="$emit('cancelSet')">取消</el-button>
-      <el-button type="primary" @click="changeType" v-show="type==='detail'">修改</el-button>
-      <el-button type="primary" @click="confirm" v-show="type==='edit'">确认</el-button>
+      <el-button type="primary" @click="changeType" v-if="type==='detail'">修改</el-button>
+      <el-button type="primary" @click="confirm" v-if="type==='edit'">确认</el-button>
       
     </footer>
     <el-dialog v-model="dialogVisible">
