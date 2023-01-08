@@ -15,10 +15,6 @@ const register = () => {
   registerVisible.value = true;
   afterSwitch();
 };
-// 完成注册后，直接使用返回的token登录
-const afterRegister = () => {
-  afterLogin();
-};
 const cancelRegister = () => {
   registerVisible.value = false;
 };

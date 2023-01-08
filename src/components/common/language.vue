@@ -40,10 +40,10 @@ onMounted(() => {
     <template #reference>
       <img class="language-icon" src="@/assets/images/base/switch-language.svg" alt="">
     </template>
-    <ul class="language-list">
-      <li class="language-list-item" @click="switchLanguage('zh')">中文</li>
-      <!-- <li class="language-list-item" @click="switchLanguage('en')">English</li> -->
-    </ul>
+    <el-radio-group v-model="globalStore.language" @change="switchLanguage">
+      <el-radio label="zh" size="large">中文</el-radio>
+      <!-- <el-radio label="en" size="large">English</el-radio> -->
+    </el-radio-group>
   </el-popover>
 </template>
 

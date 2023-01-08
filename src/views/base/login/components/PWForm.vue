@@ -108,7 +108,7 @@ defineExpose({
         <el-input v-model="formData.username" :placeholder="$t('login.usernamePlaceholder')" prefix-icon="User" size="large"></el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="formData.password" :placeholder="$t('login.passwordPlaceholder')" prefix-icon="Lock" size="large" type="password"></el-input>
+        <el-input @keyup.enter="confirm" v-model="formData.password" :placeholder="$t('login.passwordPlaceholder')" prefix-icon="Lock" size="large" type="password"></el-input>
       </el-form-item>
       <!-- <el-form-item prop="savepassword">
         <el-checkbox v-model="formData.savepassword" :label="$t('login.savePassword')"/>

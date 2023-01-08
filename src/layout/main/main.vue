@@ -31,6 +31,7 @@ const currentRoutePath = computed(() => {
 .main-box {
   box-sizing: border-box;
   width: 80%;
+  max-width: 1920px;
   height: 100%;
   flex: 8;
   background-color: #fff;
