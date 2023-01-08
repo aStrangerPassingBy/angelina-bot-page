@@ -49,7 +49,7 @@ const switchLoginType = (type: 'PW' | 'PIN') => {
 const afterLogin = () => {
   const routes = useRoutes();
   routes.updateRoutes();
-  nextTick().then(() => {
+  nextTick(() => {
     router.replace({path: '/home'});
   });
 };

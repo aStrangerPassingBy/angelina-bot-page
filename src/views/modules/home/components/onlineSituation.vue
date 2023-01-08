@@ -3,11 +3,16 @@ import { ref, inject, onMounted } from 'vue';
 import { getBotBoardApi } from '@/api/modules/home';
 
 const pieRef = ref();
+const loading = ref(false);
 const $echarts: any = inject('$echarts');
 
 const drawPie = (data: any) => {
   var myChart = $echarts.init(pieRef.value);
   const option = {
+    title: {
+      text: '在线情况',
+      left: 'left'
+    },
     tooltip: {
       trigger: 'item'
     },
@@ -47,19 +52,28 @@ const drawPie = (data: any) => {
   option && myChart.setOption(option);
 }
 
-onMounted(() => {
+const init = () => {
+  loading.value = true
   getBotBoardApi().then(res => {
     const data = [
       { value: res.data.online, name: 'online' },
       { value: res.data.offline, name: 'offline' }
     ]
     drawPie(data);
+  }).catch(err => {
+    console.log('err', err);
+  }).finally(() => {
+    loading.value = false;
   })
+}
+
+onMounted(() => {
+  init();
 })
 </script>
 
 <template>
-  <div>
+  <div v-loading="loading">
     <div class="pie" ref="pieRef"></div>
   </div>
 </template>

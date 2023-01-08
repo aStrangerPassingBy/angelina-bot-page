@@ -6,54 +6,56 @@ const barRef = ref();
 const loading = ref(false);
 const $echarts: any = inject('$echarts');
 
-const drawBar = (dimensions: string[], source: (string|number)[]) => {
-  console.log('dimensions', dimensions, source);
+const drawBar = (xAxis: string[], yAxis: number[]) => {
   
   var myChart = $echarts.init(barRef.value);
   const option = {
-    dataset: [
-      {
-        dimensions: dimensions,
-        source: source
+    title: {
+      text: '功能使用情况',
+      left: 'left'
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
       },
-      {
-        transform: {
-          type: 'sort',
-          config: { dimension: 'count', order: 'desc' }
-        }
-      }
-    ],
+    },
     xAxis: {
+      data: xAxis,
       type: 'category',
       axisLabel: { interval: 0, rotate: 30 }
     },
-    yAxis: {},
+    yAxis: {
+      type: 'value'
+    },
     series: {
       type: 'bar',
-      encode: { x: 'name', y: 'score' },
-      datasetIndex: 1
-    }
+      data: yAxis,
+    },
   };
   option && myChart.setOption(option);
 }
 
-onMounted(() => {
+const init = () => {
   loading.value = true;
   getFuncListApi().then(res => {
+    const xAxis: string[] = [], yAxis: number[] = [];
     const data: Array<{name: string, count: number}> = res.data;
-    const source: Array<number| string> = [];
-    const dimensions = ['name', 'count'];
     data.sort((a, b) => b.count - a.count);
     const some: Array<{name: string, count: number}> = data.slice(0, 10);
     some.forEach(item => {
-      const arr: Array<number | string> = [];
-      arr[0] = item.name;
-      arr[1] = item.count;
-      source.push(arr as any);
+      xAxis.push(item.name);
+      yAxis.push(item.count);
     })
-    drawBar(dimensions, source);
+    drawBar(xAxis, yAxis);
+  }).catch(err => {
+    console.log('err', err);
+  }).finally(() => {
     loading.value = false;
   })
+}
+onMounted(() => {
+  init();
 })
 </script>
 

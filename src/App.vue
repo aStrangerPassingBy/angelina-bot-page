@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, nextTick } from 'vue';
 import { useGlobalStore } from '@/stores';
 import { useRouter } from 'vue-router';
 import { getBrowserLang } from './utils/utils';
@@ -35,7 +35,9 @@ onMounted(() => {
     globalStore.updateLanguage(lang);
   }
   routes.updateRoutes();
-  router.replace({path: '/home'})
+  nextTick(() => {
+    router.replace({path: '/home'})
+  })
 })
 </script>
 

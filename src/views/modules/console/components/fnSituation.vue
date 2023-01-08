@@ -7,31 +7,31 @@ const loading = ref(false);
 const $bus: any = inject('$bus');
 const $echarts: any = inject('$echarts');
 
-const drawBar = (dimensions: any, source: any) => {
+const drawBar = (xAxis: string[], yAxis: number[]) => {
   var myChart = $echarts.init(barRef.value);
   const option = {
-    dataset: [
-      {
-        dimensions: dimensions,
-        source: source
+    title: {
+      text: '功能使用情况',
+      left: 'left'
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
       },
-      {
-        transform: {
-          type: 'sort',
-          config: { dimension: 'count', order: 'desc' }
-        }
-      }
-    ],
+    },
     xAxis: {
+      data: xAxis,
       type: 'category',
       axisLabel: { interval: 0, rotate: 30 }
     },
-    yAxis: {},
+    yAxis: {
+      type: 'value'
+    },
     series: {
       type: 'bar',
-      encode: { x: 'name', y: 'score' },
-      datasetIndex: 1
-    }
+      data: yAxis,
+    },
   };
   option && myChart.setOption(option);
 }
@@ -39,18 +39,18 @@ const drawBar = (dimensions: any, source: any) => {
 const init = () => {
   loading.value = true;
   getSomeOneFuncListApi().then(res => {
-    const { data } = res;
-    const source: any[] = [];
-    const dimensions = ['name', 'count'];
-    data.sort((a: any, b: any) => b.count - a.count);
-    const some = data.slice(0, 10);
-    some.forEach((item: any) => {
-      const arr = [];
-      arr[0] = item.name;
-      arr[1] = item.count;
-      source.push(arr);
+    const xAxis: string[] = [], yAxis: number[] = [];
+    const data: Array<{name: string, count: number}> = res.data;
+    data.sort((a, b) => b.count - a.count);
+    const some: Array<{name: string, count: number}> = data.slice(0, 10);
+    some.forEach(item => {
+      xAxis.push(item.name);
+      yAxis.push(item.count);
     })
-    drawBar(dimensions, source);
+    drawBar(xAxis, yAxis);
+  }).catch(err => {
+    console.log('err', err);
+  }).finally(() => {
     loading.value = false;
   })
 }

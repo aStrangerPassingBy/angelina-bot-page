@@ -22,7 +22,7 @@ const init = () => {
 }
 
 onMounted(() => {
-  init();
+  // init();
   $bus.on('initBotList', () => {
     init();
   })
@@ -34,10 +34,13 @@ onUnmounted(() => {
 
 <template>
   <div>
-    <botListItem v-for="item in botList" :key="item.id" :botInfo="item"></botListItem>
+    <el-empty class="no-bot" v-show="!botList.length" description="暂无可用的机器人" />
+    <botListItem v-show="botList.length" v-for="item in botList" :key="item.id" :botInfo="item"></botListItem>
   </div>
 </template>
 
 <style lang="scss" scoped>
-  
+.no-bot {
+  height: 100%;
+}
 </style>
