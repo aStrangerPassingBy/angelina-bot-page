@@ -1,5 +1,5 @@
 export interface NoticeItem {
   id: string,
   text: string,
-  img: string | null
+  img: string | null | undefined
 }

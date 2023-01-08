@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { ref, reactive, inject, onMounted } from 'vue';
+import { ref, reactive, inject, onMounted, onUnmounted } from 'vue';
 import { getUserPropertyApi } from '@/api/modules/console';
 import type { TableColumnCtx } from 'element-plus'
 
@@ -15,6 +15,7 @@ type SummaryMethodProps<T = TableItem> = {
 
 const tokenPie = ref();
 const tableData = reactive<TableItem[]>([]);
+const $bus: any = inject('$bus');
 const $echarts: any = inject('$echarts');
 
 const drawPie = () => {
@@ -80,13 +81,23 @@ const getSummaries = (param: SummaryMethodProps) => {
   return sums
 }
 
-onMounted(() => {
+const init = () => {
   getUserPropertyApi().then(res => {
     console.log('getUserPropertyApi', res);
     tableData.push({name: '已使用', value: res.useToken || 0});
     tableData.push({name: '未使用', value: (res.token || 0) - (res.useToken || 0)});
     drawPie();
   })
+}
+
+onMounted(() => {
+  init();
+  $bus.on('initTokenSituation', () => {
+    init();
+  })
+})
+onUnmounted(() => {
+  $bus.off('initTokenSituation');
 })
 </script>
 

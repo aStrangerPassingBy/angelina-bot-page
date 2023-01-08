@@ -1,9 +1,10 @@
 <script setup lang='ts'>
-import { ref, inject, onMounted } from 'vue';
+import { ref, inject, onMounted, onUnmounted } from 'vue';
 import { getSomeOneFuncListApi } from '@/api/modules/console';
 
 const barRef = ref();
 const loading = ref(false);
+const $bus: any = inject('$bus');
 const $echarts: any = inject('$echarts');
 
 const drawBar = (dimensions: any, source: any) => {
@@ -35,7 +36,7 @@ const drawBar = (dimensions: any, source: any) => {
   option && myChart.setOption(option);
 }
 
-onMounted(() => {
+const init = () => {
   loading.value = true;
   getSomeOneFuncListApi().then(res => {
     const { data } = res;
@@ -52,6 +53,17 @@ onMounted(() => {
     drawBar(dimensions, source);
     loading.value = false;
   })
+}
+
+onMounted(() => {
+  init();
+  $bus.on('initFnSituation', () => {
+    init()
+  })
+})
+
+onUnmounted(() => {
+  $bus.off('initFnSituation');
 })
 </script>
 

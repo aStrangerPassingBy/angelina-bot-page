@@ -1,41 +1,17 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
-import { getBotListApi } from '@/api/modules/console';
-import botListItem from './components/botListItem.vue';
+import botListBox from './components/botListBox.vue';
 import fnSituation from './components/fnSituation.vue';
 import tokenSituation from './components/tokenSituation.vue';
-import type { BotListItem } from './interface';
-
-const leftLoading = ref(false);
-const botList = reactive<BotListItem[]>([]);
-
-onMounted(() => {
-  leftLoading.value = true;
-  getBotListApi().then(res => {
-    console.log('getBotListApi', res.data.length);
-    if(res.data[0] !== null) {
-      res.data.forEach((item: BotListItem) => {
-        botList.push(item);
-      });
-    }
-    leftLoading.value = false;
-  })
-})
 </script>
 
 <template>
   <div class="console-box">
-    <div class="console-box-left" v-loading="leftLoading">
-      <div class="bot-list-box" v-show="botList.length">
-        <botListItem v-for="item in botList" :key="item.id" :botInfo="item"></botListItem>
-      </div>
-      <div class="no-bot" v-show="!botList.length">
-        <el-empty description="暂无绑定的机器人" />
-      </div>
+    <div class="console-box-left">
+      <botListBox class="boxList-box box-shadow"></botListBox>
     </div>
     <div class="console-box-right">
-      <tokenSituation></tokenSituation>
-      <fnSituation></fnSituation>
+      <tokenSituation class="tokenSituation-box box-shadow"></tokenSituation>
+      <fnSituation class="fnSituation-box box-shadow"></fnSituation>
     </div>
   </div>
 </template>
@@ -44,24 +20,33 @@ onMounted(() => {
 .console-box {
   display: flex;
   width: 100%;
-  max-width: 1920px;
-  .console-box-left, .console-box-right {
-    width: 50%;
-  }
+  height: 100%;
   .console-box-left {
-    margin-right: 30px;
-    .bot-list-box {
-      flex-direction: column;
-    }
-    .no-bot {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 50%;
+    width: 50%;
+    margin: 10px;
+    .boxList-box {
+      height: 100%;
     }
   }
   .console-box-right {
-    margin-left: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 50%;
+    margin: 10px;
+    .tokenSituation-box{
+      height: 45%;
+    }
+    .fnSituation-box {
+      height: 50%;
+    }
   }
+}
+.box-shadow {
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px #888888;
+  padding: 10px;
 }
 </style>

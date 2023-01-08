@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { reactive } from 'vue';
+import { reactive, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useGlobalStore } from '@/stores';
@@ -19,11 +19,13 @@ const visible = reactive({
   editUsername: false,
   editPassword: false,
 })
+const $bus: any = inject('$bus')
 
 const closeDialog = () => {
   visible.linkToBot = false;
   visible.editUsername = false;
   visible.editPassword = false;
+  $bus.emit('initBotList');
 }
 
 // 退出登录

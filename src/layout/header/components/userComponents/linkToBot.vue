@@ -1,7 +1,8 @@
 <script setup lang='ts'>
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
-import type { FormRules } from 'element-plus';
+import { ElMessage, ElMessageBox, type FormRules } from 'element-plus';
+import { creatCaptchaApi, captchaApi } from '@/api/common';
 import { addUserBotApi } from '@/api/common/user';
 
 const emits = defineEmits<{
@@ -15,6 +16,7 @@ const formDataRef = ref();
 const formData = reactive({
   qq: ''
 })
+const $bus: any = inject('$bus');
 
 const rules = computed((): FormRules => {
   return {
@@ -30,12 +32,39 @@ const rules = computed((): FormRules => {
   }
 });
 const confirm = () => {
-  const params = {
-    qq: formData.qq
-  }
-  addUserBotApi(params).then((res) => {
-    console.log(res);
-  })
+  ElMessageBox.confirm(`确认要绑定qq为${formData.qq}的账号么？`, {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+  }).then(async () => {
+    const params = {
+      qq: formData.qq
+    };
+    loading.value = true;
+    const creatCaptchaResult = await creatCaptchaApi(params);
+    loading.value = false;
+    const messageBoxResult = await ElMessageBox.confirm(`给qq${formData.qq}发送验证码${creatCaptchaResult.data}`, {
+      confirmButtonText: '我已发送',
+      cancelButtonText: '取消',
+    });
+    
+    if(messageBoxResult === 'confirm') {
+      const linkBotResult = await addUserBotApi(params);
+      if(!linkBotResult.data.ok) {
+        ElMessage({
+          type: 'error',
+          message: linkBotResult.data.text
+        });
+      } else {
+        ElMessage({
+          type: 'success',
+          message: linkBotResult.data.text
+        });
+        $bus.emit('initBotList');
+        $bus.emit('initFnSituation');
+        emits('closeDialog');
+      }
+    }
+  }).catch(() => {});
 }
 </script>
 

@@ -62,7 +62,7 @@ const verify = () => {
           if(!checkCaptchaResult.data.ok) {
             ElMessage({
               type: 'error',
-              message: checkCaptchaResult.data.token
+              message: checkCaptchaResult.data.text
             })
           } else {
             if(checkCaptchaResult.data?.userInfo.isAdmin) {

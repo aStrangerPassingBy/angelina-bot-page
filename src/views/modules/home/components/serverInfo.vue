@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, onMounted } from 'vue';
-import { getAllBotDataApi, getVisitPageDataByPageApi, getVisitPageDataByTimeApi } from '@/api/modules/home';
+import { getAllBotDataApi, getVisitPageDataByTimeApi } from '@/api/modules/home';
 
 const serverInfo = reactive({
   ram: 0,
@@ -16,23 +16,12 @@ onMounted(() => {
       serverInfo.ram = result[0].data.ram;
       serverInfo.receive = result[0].data.receive;
       serverInfo.send = result[0].data.send;
-
       let count: number = 0;
       result[1].data.forEach((item: any) => {
         count += item.count;
       })
       visitInfo.visit = count;
     })
-  // getAllBotDataApi().then(res => {
-  //   console.log('服务器信息', res);
-  //   serverInfo.ram = res.data.ram;
-  //   serverInfo.receive = res.data.receive;
-  //   serverInfo.send = res.data.send;
-  // })
-  // getVisitPageDataByTimeApi().then(res => {
-  //   console.log('24小时访问量', res);
-    
-  // })
 })
 </script>
 

@@ -9,6 +9,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 export default defineConfig(() => {
 
   return {
+    base: './',
     plugins: [
       vue(), 
       vueJsx(),
@@ -37,7 +38,7 @@ export default defineConfig(() => {
       open: true,
 			proxy: {
 				"/api": {
-          target: "http://175.24.31.205:8087/",
+          target: "http://175.24.31.205:8087",
 					changeOrigin: true,
 					rewrite: path => path.replace(/^\/api/, "")
 				}
