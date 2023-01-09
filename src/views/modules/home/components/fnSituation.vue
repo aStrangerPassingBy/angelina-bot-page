@@ -1,14 +1,15 @@
 <script setup lang='ts'>
-import { ref, inject, onMounted } from 'vue';
+import { ref, inject, onMounted, onUnmounted } from 'vue';
 import { getFuncListApi } from '@/api/modules/home';
 
 const barRef = ref();
 const loading = ref(false);
 const $echarts: any = inject('$echarts');
 
+let myChart: any = null;
+
 const drawBar = (xAxis: string[], yAxis: number[]) => {
-  
-  var myChart = $echarts.init(barRef.value);
+
   const option = {
     title: {
       text: '功能使用情况',
@@ -34,10 +35,13 @@ const drawBar = (xAxis: string[], yAxis: number[]) => {
     },
   };
   option && myChart.setOption(option);
+  window.addEventListener('resize', myChart.resize);
 }
 
 const init = () => {
   loading.value = true;
+  myChart ? window.removeEventListener('resize', myChart.resize) : '';
+  myChart = $echarts.init(barRef.value);
   getFuncListApi().then(res => {
     const xAxis: string[] = [], yAxis: number[] = [];
     const data: Array<{name: string, count: number}> = res.data;
@@ -54,8 +58,12 @@ const init = () => {
     loading.value = false;
   })
 }
+
 onMounted(() => {
   init();
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', myChart.resize);
 })
 </script>
 

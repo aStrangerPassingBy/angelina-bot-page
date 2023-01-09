@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { ref, reactive, inject, onMounted, onUnmounted } from 'vue';
 import { getUserPropertyApi } from '@/api/modules/console';
-import type { TableColumnCtx } from 'element-plus'
+import type { TableColumnCtx } from 'element-plus';
 
 type TableItem = {
   name: string,
@@ -14,12 +14,14 @@ type SummaryMethodProps<T = TableItem> = {
 }
 
 const tokenPie = ref();
+const loading = ref(false);
 const tableData = reactive<TableItem[]>([]);
 const $bus: any = inject('$bus');
 const $echarts: any = inject('$echarts');
 
+let myChart: any = null;
+
 const drawPie = () => {
-  var myChart = $echarts.init(tokenPie.value);
   const data: TableItem[] = []
   data.push(tableData[1]);
   tableData[0].value ? data.push(tableData[0]) : '';
@@ -53,6 +55,7 @@ const drawPie = () => {
   };
 
   option && myChart.setOption(option);
+  window.addEventListener('resize', myChart.resize);
 }
 
 const getSummaries = (param: SummaryMethodProps) => {
@@ -82,11 +85,18 @@ const getSummaries = (param: SummaryMethodProps) => {
 }
 
 const init = () => {
+  loading.value = true;
+  myChart ? window.removeEventListener('resize', myChart.resize) : '';
+  myChart = myChart = $echarts.init(tokenPie.value);
   getUserPropertyApi().then(res => {
     console.log('getUserPropertyApi', res);
     tableData.push({name: '已使用', value: res.useToken || 0});
     tableData.push({name: '未使用', value: (res.token || 0) - (res.useToken || 0)});
     drawPie();
+  }).catch(err => {
+    console.log('err', err);
+  }).finally(() => {
+    loading.value = false;
   })
 }
 
@@ -98,6 +108,7 @@ onMounted(() => {
 })
 onUnmounted(() => {
   $bus.off('initTokenSituation');
+  window.removeEventListener('resize', myChart.resize);
 })
 </script>
 
@@ -124,7 +135,7 @@ onUnmounted(() => {
   justify-content: center;
   .token-pie {
     width: 400px;
-    height: 300px;
+    height: 100%;
   }
   .table-box {
     display: flex;

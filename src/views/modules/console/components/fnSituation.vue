@@ -7,8 +7,9 @@ const loading = ref(false);
 const $bus: any = inject('$bus');
 const $echarts: any = inject('$echarts');
 
+let myChart: any = null
+
 const drawBar = (xAxis: string[], yAxis: number[]) => {
-  var myChart = $echarts.init(barRef.value);
   const option = {
     title: {
       text: '功能使用情况',
@@ -34,10 +35,13 @@ const drawBar = (xAxis: string[], yAxis: number[]) => {
     },
   };
   option && myChart.setOption(option);
+  window.addEventListener('resize', myChart.resize);
 }
 
 const init = () => {
   loading.value = true;
+  myChart ? window.removeEventListener('resize', myChart.resize) : '';
+  myChart = $echarts.init(barRef.value);
   getSomeOneFuncListApi().then(res => {
     const xAxis: string[] = [], yAxis: number[] = [];
     const data: Array<{name: string, count: number}> = res.data;
@@ -64,6 +68,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   $bus.off('initFnSituation');
+  window.removeEventListener('resize', myChart.resize);
 })
 </script>
 

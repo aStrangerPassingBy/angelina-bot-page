@@ -6,8 +6,10 @@ const pieRef = ref();
 const loading = ref(false);
 const $echarts: any = inject('$echarts');
 
+let myChart: any = null;
+
 const drawPie = (data: any) => {
-  var myChart = $echarts.init(pieRef.value);
+  
   const option = {
     title: {
       text: '在线情况',
@@ -50,10 +52,13 @@ const drawPie = (data: any) => {
     ]
   };
   option && myChart.setOption(option);
+  window.addEventListener('resize', myChart.resize);
 }
 
 const init = () => {
-  loading.value = true
+  loading.value = true;
+  myChart ? window.removeEventListener('resize', myChart.resize) : '';
+  myChart = $echarts.init(pieRef.value);
   getBotBoardApi().then(res => {
     const data = [
       { value: res.data.online, name: 'online' },
