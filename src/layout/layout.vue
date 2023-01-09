@@ -23,56 +23,65 @@ const title = computed(() => {
 </script>
 
 <template>
-  <el-container>
-    <el-header>
+  <el-container class="outer-container">
+    <el-header class="outer-container-header">
       <Header></Header>
     </el-header>
-    <el-container>
-      <el-aside>
+    <el-container class="inner-container">
+      <el-aside class="inner-container-aside">
         <ASide></ASide>
       </el-aside>
-      <el-main>
-        <header class="el-main-header">
+      <el-main class="inner-container-main">
+        <header class="inner-container-main-header">
           <h1>{{ title }}</h1>
         </header>
-        <section class="el-main-content">
+        <section class="inner-container-main-content">
           <Main></Main>
           <tabs v-if="router.currentRoute.value.meta.hasChildren"></tabs>
         </section>
       </el-main>
     </el-container>
-    <el-footer>
+    <el-footer class="outer-container-footer">
       <Footer></Footer>
     </el-footer>
   </el-container>
 </template>
 
 <style lang="scss" scoped>
-.el-container {
+// 全局宽高100%
+.outer-container {
   display: flex;
   width: 100%;
   height: 100%;
-  .el-header {
+  // 页头60px
+  .outer-container-header {
     height: 60px;
     padding: unset;
   }
-  .el-aside {
-    width: 20%;
-    max-width: 200px;
-  }
-  .el-main {
-    box-sizing: border-box;
-    padding: 10px;
-    overflow: unset;
-    overflow-x: hidden;
-    .el-main-header {
-      margin: 10px;
+  // 内盒子为全局高度减页头和页脚
+  .inner-container {
+    width: 100%;
+    height: calc(100% - 60px - 40px);
+    .inner-container-aside {
+      width: 200px;
     }
-    .el-main-content {
-      display: flex;
+    // 内部区域宽度为全局宽度减侧边栏宽度200px
+    .inner-container-main {
+      box-sizing: border-box;
+      padding: 10px;
+      width: calc(100% - 200px);
+      .inner-container-main-header {
+        margin: 10px;
+      }
+      // 展示区高度为内部区域高度减内部标题高度
+      .inner-container-main-content {
+        display: flex;
+        height: calc(100% - 45px);
+      }
     }
   }
-  .el-footer {
+  // 页脚40px
+  .outer-container-footer {
     height: 40px;
     padding: unset;
   }

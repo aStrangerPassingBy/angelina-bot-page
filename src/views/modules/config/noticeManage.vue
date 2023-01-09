@@ -156,21 +156,23 @@ onMounted(() => {
 <style scoped lang='scss'>
 .noticeManage-box {
   height: 100%;
+  width: 100%;
   .noticeManage-box-header {
-    
+    margin-bottom: 10px;
   }
   .noticeList-box {
     display: flex;
     flex-wrap: wrap;
     flex-direction: left;
+    width: 100%;
     .notice-item {
       display: flex;
       flex-direction: column;
-      width: 300px;
+      width: 280px;
       height: 200px;
       border: 1px solid #ccc;
       border-radius: 10px;
-      margin: 10px 5px;
+      margin: 10px 5px 10px 0;
       .notice-header {
         display: flex;
         align-items: center;

@@ -68,13 +68,12 @@ onMounted(() => {
     .bar-box {
       box-sizing: border-box;
       width: 100%;
-      height: 80%;
+      height: calc(100% - 150px);
       border: 1px solid #ccc;
       border-radius: 10px;
       padding: 15px;
       box-shadow: 5px 5px 5px #888888;
     }
   }
-  
 }
 </style>

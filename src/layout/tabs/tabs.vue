@@ -52,9 +52,8 @@ const clickMenu = (e: any, path: string) => {
 <style scoped lang='scss'>
 .tabs-box {
   margin-left: 10px;
-  flex: 2;
   position: relative;
-  max-width: 200px;
+  width: 200px;
   ul {
     width: 100%;
     height: 100%;
