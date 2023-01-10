@@ -2,7 +2,7 @@
 import { ref, reactive, computed, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ElMessage, ElMessageBox, type FormRules } from 'element-plus';
-import { creatCaptchaApi, captchaApi } from '@/api/common';
+import { creatCaptchaApi } from '@/api/common';
 import { addUserBotApi } from '@/api/common/user';
 
 const emits = defineEmits<{

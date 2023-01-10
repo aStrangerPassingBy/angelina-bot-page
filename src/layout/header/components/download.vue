@@ -2,6 +2,7 @@
 import { ElMessage } from "element-plus";
 
 const clickDownload = () => {
+  window.open('https://github.com/aStrangerPassingBy/angelina-bot-page/releases/tag/v0.0.1')
   ElMessage({
     type: 'info',
     message: '暂未开放'
