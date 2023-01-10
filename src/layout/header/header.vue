@@ -9,7 +9,7 @@ import user from './components/user.vue'
 <template>
   <header class="header-box">
     <div class="header-left">
-      <img src="@/assets/images/base/angelina.jpg" alt="">
+      <img src="@/assets/images/base/angelina.jpg" @click="$router.push({path: '/home'})" alt="">
       <h1>
         angelina-bot
       </h1>
@@ -66,6 +66,7 @@ import user from './components/user.vue'
       height: 40px;
       border-radius: 50%;
       margin-right: 10px;
+      cursor: pointer;
     }
     h1 {
       font-size: 35px;
