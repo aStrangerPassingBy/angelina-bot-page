@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 const link = () => {
-  window.open('https://www.angelina-bot.top')
+  // window.open('https://www.angelina-bot.top');
+  window.electronApi.openBrowser('https://www.angelina-bot.top');
 }
 </script>
 

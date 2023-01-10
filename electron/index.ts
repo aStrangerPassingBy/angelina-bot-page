@@ -1,5 +1,6 @@
 import { join } from 'node:path';
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, Menu, ipcMain, shell } from 'electron';
+// import { exec } from 'child_process'
 
 process.env.DIST = join(__dirname, '../dist');
 process.env.PUBLIC = app.isPackaged ? process.env.DIST : join(process.env.DIST, '../public');
@@ -14,7 +15,7 @@ function createWindow() {
     minHeight: 780,
     icon: join(process.env.PUBLIC!, 'favicon.ico'),
     webPreferences: {
-      contextIsolation: false,
+      // contextIsolation: false,
       nodeIntegration: true,
       preload,
     },
@@ -51,4 +52,20 @@ app.whenReady().then(() => {
     // 判断不是苹果设备，则调用app.quit()
     if(process.platform !== 'darwin') app.quit();
   });
+
+  ipcMain.on('openBrowser', (_event, url: string) => {
+    // console.log(process.platform)
+    // switch (process.platform) {
+    //   case "darwin":
+    //     exec('open ' + url);
+    //     break;
+    //   case "win32":
+    //     exec('start ' + url);
+    //     break;
+    //   default:
+    //     exec('xdg-open', [url]);
+    // }
+    console.log(url);
+    shell.openExternal(url);
+  })
 });

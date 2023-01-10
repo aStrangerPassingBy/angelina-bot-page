@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 const link = () => {
-  window.open('https://github.com/Strelizia02')
+  // window.open('https://github.com/Strelizia02');
+  window.electronApi.openBrowser('https://github.com/Strelizia02');
 }
 </script>
 

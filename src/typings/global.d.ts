@@ -3,3 +3,6 @@ declare module 'nprogress'
 declare module 'node-rsa'
 declare module 'element-plus/dist/locale/zh-cn.mjs'
 declare module 'element-plus/dist/locale/en.mjs'
+declare interface Window {
+  electronApi: any
+}
