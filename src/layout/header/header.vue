@@ -18,26 +18,35 @@ import user from './components/user.vue'
         --明日方舟主题群聊机器人
       </h2>
     </div>
-    <ul class="header-right">
-      <li class="header-right-item">
+    <div class="header-right">
+      <div class="hide-list">
         <about></about>
-      </li>
-      <li class="header-right-item">
         <download></download>
-      </li>
-      <li class="header-right-item">
         <document></document>
-      </li>
-      <li class="header-right-item">
         <github></github>
-      </li>
-      <li class="header-right-item">
         <Language></Language>
-      </li>
-      <li class="header-right-item">
+      </div>
+      <div class="show-list">
+        <el-popover
+          placement="bottom"
+          :width="100"
+          trigger="hover">
+          <template #reference>
+            <Grid style="width: 30px; height: 30px;"/>
+          </template>
+          <div>
+            <about></about>
+            <download></download>
+            <document></document>
+            <github type="text"></github>
+            <Language type="text"></Language>
+          </div>
+        </el-popover>
+      </div>
+      <div class="always-list">
         <user></user>
-      </li>
-    </ul>
+      </div>
+    </div>
   </header>
 </template>
 
@@ -64,14 +73,51 @@ import user from './components/user.vue'
   }
   .header-right {
     display: flex;
-    .header-right-item {
+    align-items: center;
+    .hide-list, .show-list, .always-list {
       display: flex;
       align-items: center;
-      justify-content: center;
-      margin: 0 20px;
-      // width: 75px;
+      :nth-child(n) {
+        display: flex;
+        align-items: center;
+        margin: 0 15px;
+      }
+    }
+    .show-list {
+      display: none;
     }
   }
-  
+}
+@media screen and (max-width: 1080px) {
+  .header-left {
+    h2 {
+      display: none;
+    }
+  }
+}
+@media screen and (max-width: 790px) {
+  .hide-list {
+    display: none !important;
+  }
+  .show-list {
+    display: flex !important;
+  }
+  .show-list, .always-list {
+    :nth-child(n) {
+      margin: 0 10px !important;
+    }
+  }
+}
+@media screen and (max-width: 505px) {
+  .header-left {
+    h1 {
+      font-size: 25px !important;
+    }
+  }
+  .always-list {
+    :nth-child(n) {
+      margin-right: 0 !important;
+    }
+  }
 }
 </style>

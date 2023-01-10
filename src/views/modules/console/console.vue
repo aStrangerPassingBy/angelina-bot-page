@@ -18,6 +18,7 @@ import tokenSituation from './components/tokenSituation.vue';
 
 <style scoped lang="scss">
 .console-box {
+  box-sizing: border-box;
   display: flex;
   width: 100%;
   height: 100%;
@@ -48,5 +49,16 @@ import tokenSituation from './components/tokenSituation.vue';
   border-radius: 10px;
   box-shadow: 5px 5px 5px #888888;
   padding: 10px;
+}
+@media screen and (max-width: 800px) {
+  .console-box {
+    padding-right: 10px;
+    flex-direction: column;
+    height: unset !important;
+  }
+  .console-box-left,.console-box-right {
+    width: 100% !important;
+    height: 600px;
+  }
 }
 </style>

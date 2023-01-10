@@ -25,6 +25,7 @@ onMounted(() => {
 
 <style scoped lang='scss'>
 .home-box {
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
   display: flex;
@@ -74,6 +75,17 @@ onMounted(() => {
       padding: 15px;
       box-shadow: 5px 5px 5px #888888;
     }
+  }
+}
+@media screen and (max-width: 800px) {
+  .home-box {
+    padding-right: 10px;
+    flex-direction: column;
+    height: unset !important;
+  }
+  .home-box-left,.home-box-right {
+    width: 100% !important;
+    height: 600px;
   }
 }
 </style>

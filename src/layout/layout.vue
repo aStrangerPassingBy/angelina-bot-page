@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useGlobalStore } from '@/stores';
 import Header from './header/header.vue';
@@ -10,6 +10,8 @@ import tabs from './tabs/tabs.vue'
 
 const router = useRouter();
 const globalStore = useGlobalStore();
+
+const sideMenu = ref(false);
 
 const title = computed(() => {
   switch(globalStore.language) {
@@ -45,6 +47,12 @@ const title = computed(() => {
       <Footer></Footer>
     </el-footer>
   </el-container>
+  <el-drawer direction="ltr" v-model="sideMenu" size="50%" :with-header="false">
+    <ASide></ASide>
+  </el-drawer>
+  <div class="side-arrow" @click="sideMenu=true">
+    <el-icon><ArrowRight style="color: #ccc" /></el-icon>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -84,6 +92,27 @@ const title = computed(() => {
   .outer-container-footer {
     height: 40px;
     padding: unset;
+  }
+}
+.side-arrow {
+  display: none;
+  position: fixed;
+  width: 15px;
+  height: 60px;
+  border: 1px solid #ccc;
+  border-left: none;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+}
+@media screen and (max-width: 800px) {
+  .inner-container-aside {
+    display: none;
+  }
+  .side-arrow {
+    display: flex;
+    align-items: center;
   }
 }
 </style>

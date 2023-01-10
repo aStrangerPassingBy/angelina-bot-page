@@ -8,7 +8,7 @@ const zh_header = {
   cancel: '取消',
   about: '关于',
   download: '下载',
-  document: '查看文档',
+  document: '文档',
   description: '只是描述而已',
   // 绑定qq
   linkQQPlaceholder: '请输入绑定的qq',

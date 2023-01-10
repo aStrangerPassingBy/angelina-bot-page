@@ -52,7 +52,9 @@ const handleLogout = () => {
     trigger="hover">
     <template #reference>
       <!-- <el-avatar :size="35" src-set="@/assets/images/base/default-avatar.png"/> -->
-      <img class="user-avatar" src="@/assets/images/base/default-avatar.png" alt="">
+      <div>
+        <img class="user-avatar" src="@/assets/images/base/default-avatar.png" alt="">
+      </div>
     </template>
     <template v-if="globalStore.isLogin">
       <div class="userInfo-box">
@@ -64,7 +66,6 @@ const handleLogout = () => {
           <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
           {{ $t('header.linkToBot') }}
         </li>
-        
         <li class="user-menu-item" @click="visible.editUsername = true">
           <!-- <img src="@/assets/images/base/edit.svg" alt=""> -->
           {{ $t('header.editUsername') }}
